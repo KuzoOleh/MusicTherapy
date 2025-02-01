@@ -240,8 +240,8 @@ GameObject:
   - component: {fileID: 227580121}
   - component: {fileID: 227580125}
   - component: {fileID: 227580120}
-  - component: {fileID: 227580124}
   - component: {fileID: 227580126}
+  - component: {fileID: 227580127}
   m_Layer: 0
   m_Name: Drum
   m_TagString: Untagged
@@ -338,21 +338,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1224879547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &227580124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 227580119}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91c4ad93e715b794885ad64198c06571, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particleSystem: {fileID: 9198552058510635291, guid: 71817b73476ade9419b3572f62ea818e, type: 3}
-  audioSource: {fileID: 227580126}
-  particleDestroy: 2
 --- !u!54 &227580125
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -477,6 +462,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &227580127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227580119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91c4ad93e715b794885ad64198c06571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystem: {fileID: 0}
+  audioSource: {fileID: 227580126}
+  particleDestroy: 2
 --- !u!1 &313767219
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,8 +535,8 @@ GameObject:
   - component: {fileID: 389450744}
   - component: {fileID: 389450743}
   - component: {fileID: 389450742}
-  - component: {fileID: 389450741}
   - component: {fileID: 389450740}
+  - component: {fileID: 389450746}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -641,21 +641,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &389450741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 389450739}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91c4ad93e715b794885ad64198c06571, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particleSystem: {fileID: 9198552058510635291, guid: 71817b73476ade9419b3572f62ea818e, type: 3}
-  audioSource: {fileID: 389450740}
-  particleDestroy: 2
 --- !u!65 &389450742
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -745,6 +730,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1224879547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &389450746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389450739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91c4ad93e715b794885ad64198c06571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystem: {fileID: 0}
+  audioSource: {fileID: 389450740}
+  particleDestroy: 2
 --- !u!1 &529525052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,7 +1054,7 @@ Transform:
   m_GameObject: {fileID: 1224879546}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.3614397, z: 0}
+  m_LocalPosition: {x: 0, y: 1.764, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1080,7 +1080,6 @@ MonoBehaviour:
   - {fileID: 389450739}
   instrumentTrigger: {fileID: 1913611628}
   visualFeedback: {fileID: 9198552058510635291, guid: 71817b73476ade9419b3572f62ea818e, type: 3}
-  particleDestroy: 2
 --- !u!1 &1512288779 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5186905985774589293, guid: 543985677cc76924e97abe1d1ca3d99f, type: 3}

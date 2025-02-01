@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class NoteTrigger : MonoBehaviour
 {
@@ -7,7 +9,6 @@ public class NoteTrigger : MonoBehaviour
     [SerializeField] private List<GameObject> notes;
     [SerializeField] private GameObject instrumentTrigger;
     [SerializeField] private GameObject visualFeedback;
-    [SerializeField] private float particleDestroy = 2f;
     
     void Awake() {
         //Assign particle material for each note
@@ -16,20 +17,21 @@ public class NoteTrigger : MonoBehaviour
             if (renderer != null) {
                 foreach (Material mat in renderer.materials) {
                      visualFeedback.GetComponent<Renderer>().material = mat;
+                     GameObject particleInstance = Instantiate(visualFeedback, obj.transform.position, quaternion.identity, obj.transform);
+                     ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
+                     //make sure that PS won't play on Awake
+                     ps.Stop();
                      Debug.Log($"Particle material for {obj.name}: {visualFeedback.GetComponent<Renderer>().sharedMaterial}");}
             }
         }
-        
     }
 
     private void OnTriggerEnter (Collider other) {
         if (other.CompareTag("Stick")){
-            
-            Instantiate(visualFeedback, transform.position, transform.rotation);
+            Debug.Log("$Play {other.name}");
+            //Instantiate(visualFeedback, transform.position, transform.rotation);
             //audioSource.Play();
-            particleDestroy -= Time.deltaTime;
-            if (particleDestroy == 0f){ Destroy(gameObject);}
+            //Destroy(gameObject, 2f);
         }
     }
-
 }

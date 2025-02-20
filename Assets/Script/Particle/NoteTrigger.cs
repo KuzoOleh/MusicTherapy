@@ -25,13 +25,4 @@ public class NoteTrigger : MonoBehaviour
             }
         }
     }
-
-    private void OnTriggerEnter (Collider other) {
-        if (other.CompareTag("Stick")){
-            Debug.Log("$Play {other.name}");
-            //Instantiate(visualFeedback, transform.position, transform.rotation);
-            //audioSource.Play();
-            //Destroy(gameObject, 2f);
-        }
-    }
 }

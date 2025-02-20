@@ -13,7 +13,8 @@ public class ParticleTrigger : MonoBehaviour
     private void OnTriggerEnter (Collider other) {
         if (other.CompareTag("Stick")){
             
-            Instantiate(particleSystem, transform.position, transform.rotation);
+            particleSystem.Play();
+            //Instantiate(particleSystem, transform.position, transform.rotation);
             audioSource.Play();
         }
     }

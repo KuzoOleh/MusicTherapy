@@ -486,7 +486,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 8921e1273d8774445950c6cb28c8e4e4, type: 3}
   m_Resource: {fileID: 8300000, guid: 8921e1273d8774445950c6cb28c8e4e4, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.422
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -664,7 +664,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: c956b1109b4537d44a40ee4be6bb6dd3, type: 3}
   m_Resource: {fileID: 8300000, guid: c956b1109b4537d44a40ee4be6bb6dd3, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.442
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1268,7 +1268,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: a05d7933e215ea046a7b8d3bcc7e5a6e, type: 3}
   m_Resource: {fileID: 8300000, guid: a05d7933e215ea046a7b8d3bcc7e5a6e, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.519
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1380,6 +1380,7 @@ GameObject:
   - component: {fileID: 1771237651}
   - component: {fileID: 1771237650}
   - component: {fileID: 1771237649}
+  - component: {fileID: 1771237654}
   m_Layer: 0
   m_Name: Stick (1)
   m_TagString: Untagged
@@ -1627,6 +1628,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1771237647}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1771237654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771237647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f61d7764bcc774ba6ecf1d229f1ae5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1784589702
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1806,6 +1819,7 @@ GameObject:
   - component: {fileID: 1913611629}
   - component: {fileID: 1913611634}
   - component: {fileID: 1913611633}
+  - component: {fileID: 1913611635}
   m_Layer: 0
   m_Name: Stick
   m_TagString: Untagged
@@ -2050,9 +2064,21 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 1
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1913611635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1913611628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f61d7764bcc774ba6ecf1d229f1ae5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2015611765
 GameObject:
   m_ObjectHideFlags: 0

@@ -584,6 +584,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 0}
   audioSource: {fileID: 227580126}
+  drumStick: {fileID: 0}
+  drumStickAppliedForce: 0
 --- !u!1 &313767219
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,6 +853,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 0}
   audioSource: {fileID: 389450740}
+  drumStick: {fileID: 0}
+  drumStickAppliedForce: 0
 --- !u!1 &529525052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1366,6 +1370,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 0}
   audioSource: {fileID: 1303531325}
+  drumStick: {fileID: 0}
+  drumStickAppliedForce: 0
 --- !u!1 &1771237647
 GameObject:
   m_ObjectHideFlags: 0

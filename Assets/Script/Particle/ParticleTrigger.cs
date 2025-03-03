@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ParticleTrigger : MonoBehaviour
@@ -8,8 +9,6 @@ public class ParticleTrigger : MonoBehaviour
     [SerializeField] private float drumStickAppliedForce = 0.5f;
     const float emmisionDefaultRate = 1000f;
      
-    
-
     public void SetInstrumentTrigger(GameObject trigger) {
         drumStick = trigger;
     }
@@ -31,15 +30,21 @@ public class ParticleTrigger : MonoBehaviour
         }
     }
     private void AppliedForce() {
-        //change the volume based on applied force
-        audioSource.volume = Mathf.Clamp((drumStickAppliedForce / 10f), 0f, 1f);
-        //change the emmision rate based on applied force
-        float emmisionRate = particleSystem.emission.rateOverTime.constant / drumStickAppliedForce;
         var emmision = particleSystem.emission;
-        emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionRate);
-        Debug.Log("Rate Over Time: " + emmisionRate);
-        //return back to default emmision rate after applying force
         emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
+        
+        float clampDrumStickForce = Mathf.Clamp((drumStickAppliedForce / 10f), 0f, 1f);
+        //change the volume based on applied force
+        audioSource.volume = clampDrumStickForce;
+
+        //change the emmision rate based on applied force
+        float emmisionRate = particleSystem.emission.rateOverTime.constant * clampDrumStickForce;
+        
+        emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionRate);
+        Debug.Log("Rate Over Time: " + emmision.rateOverTime.constant);
+        //Debug.Log("Rate Over Time: " + emmisionRate);
+        //return back to default emmision rate after applying force
+        //emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
     }
 }
 

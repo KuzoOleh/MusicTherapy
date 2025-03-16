@@ -5,47 +5,65 @@ public class ParticleTrigger : MonoBehaviour
 {
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private GameObject drumStick;
-    [SerializeField] private float drumStickAppliedForce = 0.5f;
+    [SerializeField] private GameObject leftHandStick;  // Left hand stick
+    [SerializeField] private GameObject rightHandStick; // Right hand stick
+    [SerializeField] private float leftHandAppliedForce = 0.5f;  // Left hand force
+    [SerializeField] private float rightHandAppliedForce = 0.5f; // Right hand force
     const float emmisionDefaultRate = 1000f;
-     
-    public void SetInstrumentTrigger(GameObject trigger) {
-        drumStick = trigger;
+
+    public void SetInstrumentTriggers(GameObject leftStick, GameObject rightStick)
+    {
+        leftHandStick = leftStick;
+        rightHandStick = rightStick;
     }
 
-    private void Start() {
-        particleSystem = gameObject.GetComponentInChildren<ParticleSystem>(); 
+    private void Start()
+    {
+        particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
     }
 
     public void Update()
     {
-        drumStickAppliedForce = drumStick.GetComponent<MeasureSpeed>().angularVelocity.x;
+        // Update applied force for each stick independently
+        if (leftHandStick != null)
+            leftHandAppliedForce = leftHandStick.GetComponent<MeasureSpeed>().angularVelocity.x;
+        if (rightHandStick != null)
+            rightHandAppliedForce = rightHandStick.GetComponent<MeasureSpeed>().angularVelocity.x;
     }
-    private void OnTriggerEnter (Collider other) {
-        if (other.CompareTag("Stick")){
-            AppliedForce();
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Stick"))
+        {
+            // Check which stick is involved (left or right) and apply the force accordingly
+            if (other.gameObject == leftHandStick)
+            {
+                AppliedForce(leftHandAppliedForce);
+            }
+            else if (other.gameObject == rightHandStick)
+            {
+                AppliedForce(rightHandAppliedForce);
+            }
+
             particleSystem.Play();
-            //Instantiate(particleSystem, transform.position, transform.rotation);
             audioSource.Play();
         }
     }
-    private void AppliedForce() {
+
+    private void AppliedForce(float appliedForce)
+    {
         var emmision = particleSystem.emission;
         emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
-        
-        float clampDrumStickForce = Mathf.Clamp((drumStickAppliedForce / 10f), 0f, 1f);
-        //change the volume based on applied force
+
+        // Normalize applied force for the stick and clamp between 0 and 1
+        float clampDrumStickForce = Mathf.Clamp((appliedForce / 10f), 0f, 1f);
+        // Change the volume based on applied force
         audioSource.volume = clampDrumStickForce;
 
-        //change the emmision rate based on applied force
+        // Change the emission rate based on applied force
         float emmisionRate = particleSystem.emission.rateOverTime.constant * clampDrumStickForce;
-        
         emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionRate);
+
         Debug.Log("Rate Over Time: " + emmision.rateOverTime.constant);
-        //Debug.Log("Rate Over Time: " + emmisionRate);
-        //return back to default emmision rate after applying force
-        //emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
     }
 }
-
-

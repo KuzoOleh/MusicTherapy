@@ -584,8 +584,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 0}
   audioSource: {fileID: 227580126}
-  drumStick: {fileID: 0}
-  drumStickAppliedForce: 0
+  leftHandStick: {fileID: 0}
+  rightHandStick: {fileID: 0}
+  leftHandAppliedForce: 0.5
+  rightHandAppliedForce: 0.5
 --- !u!1 &313767219
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,8 +855,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 0}
   audioSource: {fileID: 389450740}
-  drumStick: {fileID: 0}
-  drumStickAppliedForce: 0
+  leftHandStick: {fileID: 0}
+  rightHandStick: {fileID: 0}
+  leftHandAppliedForce: 0.5
+  rightHandAppliedForce: 0.5
 --- !u!1 &529525052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,7 +1151,8 @@ MonoBehaviour:
   - {fileID: 227580119}
   - {fileID: 389450739}
   - {fileID: 1303531320}
-  instrumentTrigger: {fileID: 1913611628}
+  leftHandStick: {fileID: 1771237647}
+  rightHandStick: {fileID: 1913611628}
   visualFeedback: {fileID: 9198552058510635291, guid: 71817b73476ade9419b3572f62ea818e, type: 3}
 --- !u!1 &1303531320
 GameObject:
@@ -1370,8 +1375,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 0}
   audioSource: {fileID: 1303531325}
-  drumStick: {fileID: 0}
-  drumStickAppliedForce: 0
+  leftHandStick: {fileID: 0}
+  rightHandStick: {fileID: 0}
+  leftHandAppliedForce: 0.5
+  rightHandAppliedForce: 0.5
 --- !u!1 &1771237647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1388,7 +1395,7 @@ GameObject:
   - component: {fileID: 1771237649}
   - component: {fileID: 1771237654}
   m_Layer: 0
-  m_Name: Stick (1)
+  m_Name: StickLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1827,7 +1834,7 @@ GameObject:
   - component: {fileID: 1913611633}
   - component: {fileID: 1913611635}
   m_Layer: 0
-  m_Name: Stick
+  m_Name: StickRIght
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

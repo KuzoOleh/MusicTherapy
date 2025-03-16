@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "MusicTherapy-17b01247c8e420b01a1ed403e77676887882d3d3.sln"
+    "dotnet.defaultSolution": "MusicTherapy.sln"
 }

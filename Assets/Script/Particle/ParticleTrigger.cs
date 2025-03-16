@@ -1,102 +1,51 @@
+using System.Collections;
 using UnityEngine;
 
 public class ParticleTrigger : MonoBehaviour
 {
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private AudioSource audioSource;
-
-    [SerializeField] private GameObject leftHandStick;  // Left hand stick
-    [SerializeField] private GameObject rightHandStick; // Right hand stick
-    [SerializeField] private float leftHandStickAppliedForce;  // Force for left hand stick
-    [SerializeField] private float rightHandStickAppliedForce; // Force for right hand stick
-    private const float EmissionDefaultRate = 1000f;
-
     [SerializeField] private GameObject drumStick;
     [SerializeField] private float drumStickAppliedForce = 0.5f;
     const float emmisionDefaultRate = 1000f;
      
-    
-
     public void SetInstrumentTrigger(GameObject trigger) {
         drumStick = trigger;
     }
 
-    public void SetInstrumentTrigger(GameObject leftStick, GameObject rightStick)
-    {
-        // Assign the left and right hand sticks
-        leftHandStick = leftStick;
-        rightHandStick = rightStick;
+    private void Start() {
+        particleSystem = gameObject.GetComponentInChildren<ParticleSystem>(); 
     }
 
-    private void Start()
+    public void Update()
     {
-        particleSystem = GetComponentInChildren<ParticleSystem>();
-        if (particleSystem == null)
-        {
-            Debug.LogError("ParticleSystem not found in the children of this object.");
-        }
+        drumStickAppliedForce = drumStick.GetComponent<MeasureSpeed>().angularVelocity.x;
     }
-
-    private void Update()
-    {
-        // Apply force for left hand stick
-        if (leftHandStick != null)
-        {
-            leftHandStickAppliedForce = Mathf.Abs(leftHandStick.GetComponent<MeasureSpeed>().angularVelocity.x);
-            AppliedForce(leftHandStick, leftHandStickAppliedForce);
-        }
-
-        // Apply force for right hand stick
-        if (rightHandStick != null)
-        {
-            rightHandStickAppliedForce = Mathf.Abs(rightHandStick.GetComponent<MeasureSpeed>().angularVelocity.x);
-            AppliedForce(rightHandStick, rightHandStickAppliedForce);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if ((other.gameObject == leftHandStick || other.gameObject == rightHandStick) && other.CompareTag("Stick"))
-        {
-            Debug.Log($"Trigger Entered by: {other.gameObject.name}");
+    private void OnTriggerEnter (Collider other) {
+        if (other.CompareTag("Stick")){
+            AppliedForce();
             particleSystem.Play();
+            //Instantiate(particleSystem, transform.position, transform.rotation);
             audioSource.Play();
         }
     }
-
-
-    private void AppliedForce(GameObject drumStick, float drumStickAppliedForce)
-    {
-        var emission = particleSystem.emission;
-        emission.enabled = true; // Ensure emission module is enabled
-
-        // Clamp the applied force for this specific drumstick
-        float clampDrumStickForce = Mathf.Clamp(drumStickAppliedForce / 10f, 0f, 1f);
-
-        // Apply effect based on the force of the specific drumstick
+    private void AppliedForce() {
+        var emmision = particleSystem.emission;
+        emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
+        
+        float clampDrumStickForce = Mathf.Clamp((drumStickAppliedForce / 10f), 0f, 1f);
+        //change the volume based on applied force
         audioSource.volume = clampDrumStickForce;
 
-        // Ensure the emission rate isn't zero if the force is too low
-        float emissionRate = EmissionDefaultRate * clampDrumStickForce;
-        emissionRate = Mathf.Max(emissionRate, 0.1f);  // Ensure emission rate doesn't become too small to see.
-
-        emission.rateOverTime = new ParticleSystem.MinMaxCurve(emissionRate);
-
-        if (!particleSystem.isPlaying)
-        {
-            particleSystem.Play();
-        }}
-
-    private void AppliedForce() {
-        //change the volume based on applied force
-        audioSource.volume = Mathf.Clamp((drumStickAppliedForce / 10f), 0f, 1f);
         //change the emmision rate based on applied force
-        float emmisionRate = particleSystem.emission.rateOverTime.constant / drumStickAppliedForce;
-        var emmision = particleSystem.emission;
+        float emmisionRate = particleSystem.emission.rateOverTime.constant * clampDrumStickForce;
+        
         emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionRate);
-        Debug.Log("Rate Over Time: " + emmisionRate);
+        Debug.Log("Rate Over Time: " + emmision.rateOverTime.constant);
+        //Debug.Log("Rate Over Time: " + emmisionRate);
         //return back to default emmision rate after applying force
-        emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
-
+        //emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
     }
 }
+
+

@@ -4,28 +4,51 @@ using UnityEngine;
 
 public class NoteTrigger : MonoBehaviour
 {
-
     [SerializeField] private List<GameObject> notes;
-    [SerializeField] private GameObject instrumentTrigger;
+    [SerializeField] private GameObject leftHandStick;  // Left hand stick
+    [SerializeField] private GameObject rightHandStick; // Right hand stick
     [SerializeField] private GameObject visualFeedback;
 
-    
-    void Awake() {
-        //Assign particle material and instrument trigger for each note
-        foreach (GameObject obj in notes){
-            //Assign instrument trigger for each note
+    private void Awake()
+    {
+        AssignMaterial();
+        AssignTrigger();
+    }
+
+    private void AssignMaterial()
+    {
+        foreach (GameObject obj in notes)
+        {
             ParticleTrigger childTrigger = obj.GetComponent<ParticleTrigger>();
-            childTrigger.SetInstrumentTrigger(instrumentTrigger);
 
             Renderer renderer = obj.GetComponent<Renderer>();
-            if (renderer != null) {
-                foreach (Material mat in renderer.materials) {
-                     visualFeedback.GetComponent<Renderer>().material = mat;
-                     GameObject particleInstance = Instantiate(visualFeedback, obj.transform.position, quaternion.identity, obj.transform);
-                     ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
-                     //make sure that PS won't play on Awake
-                     ps.Stop();
-                     Debug.Log($"Particle material for {obj.name}: {visualFeedback.GetComponent<Renderer>().sharedMaterial}");}
+            if (renderer != null)
+            {
+                foreach (Material mat in renderer.materials)
+                {
+                    visualFeedback.GetComponent<Renderer>().material = mat;
+                    GameObject particleInstance = Instantiate(visualFeedback, obj.transform.position, quaternion.identity, obj.transform);
+                    ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
+                    ps.Stop();
+                    Debug.Log($"Particle material for {obj.name}: {visualFeedback.GetComponent<Renderer>().sharedMaterial}");
+                }
+            }
+        }
+    }
+
+    private void AssignTrigger()
+    {
+        foreach (GameObject obj in notes)
+        {
+            ParticleTrigger childTrigger = obj.GetComponent<ParticleTrigger>();
+            if (childTrigger != null)
+            {
+                // Pass the left and right hand sticks individually to each note's ParticleTrigger
+                childTrigger.SetInstrumentTrigger(leftHandStick, rightHandStick); 
+            }
+            else
+            {
+                Debug.LogWarning($"No ParticleTrigger found on {obj.name}");
             }
         }
     }

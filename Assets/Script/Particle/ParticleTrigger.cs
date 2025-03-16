@@ -1,16 +1,30 @@
+
 using System.Collections;
 using System.Collections.Generic;
+
+
 using UnityEngine;
 
 public class ParticleTrigger : MonoBehaviour
 {
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private AudioSource audioSource;
+
     [SerializeField] private GameObject leftHandStick;  // Left hand stick
     [SerializeField] private GameObject rightHandStick; // Right hand stick
     [SerializeField] private float leftHandStickAppliedForce;  // Force for left hand stick
     [SerializeField] private float rightHandStickAppliedForce; // Force for right hand stick
     private const float EmissionDefaultRate = 1000f;
+
+    [SerializeField] private GameObject drumStick;
+    [SerializeField] private float drumStickAppliedForce = 0.5f;
+    const float emmisionDefaultRate = 1000f;
+     
+    
+
+    public void SetInstrumentTrigger(GameObject trigger) {
+        drumStick = trigger;
+    }
 
     public void SetInstrumentTrigger(GameObject leftStick, GameObject rightStick)
     {
@@ -55,6 +69,7 @@ public class ParticleTrigger : MonoBehaviour
         }
     }
 
+
     private void AppliedForce(GameObject drumStick, float drumStickAppliedForce)
     {
         var emission = particleSystem.emission;
@@ -75,6 +90,18 @@ public class ParticleTrigger : MonoBehaviour
         if (!particleSystem.isPlaying)
         {
             particleSystem.Play();
-        }
+        }}
+
+    private void AppliedForce() {
+        //change the volume based on applied force
+        audioSource.volume = Mathf.Clamp((drumStickAppliedForce / 10f), 0f, 1f);
+        //change the emmision rate based on applied force
+        float emmisionRate = particleSystem.emission.rateOverTime.constant / drumStickAppliedForce;
+        var emmision = particleSystem.emission;
+        emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionRate);
+        Debug.Log("Rate Over Time: " + emmisionRate);
+        //return back to default emmision rate after applying force
+        emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
+
     }
 }

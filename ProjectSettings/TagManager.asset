@@ -7,6 +7,8 @@ TagManager:
   - Note
   - Controller
   - Stick
+  - Hand
+  - Poke
   layers:
   - Default
   - TransparentFX

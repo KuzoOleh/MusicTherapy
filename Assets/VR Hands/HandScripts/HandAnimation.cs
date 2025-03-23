@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 public class HandAnimation : MonoBehaviour
 {
     [SerializeField] private InputActionReference gripAction;
-    [SerializeField] private InputActionReference pinchAction;
+    //[SerializeField] private InputActionReference pinchAction;
+    [SerializeField] private InputActionReference pokeAction; 
     private Animator animator;
 
     private void OnEnable()
@@ -15,8 +16,12 @@ public class HandAnimation : MonoBehaviour
         gripAction.action.canceled += GripRelease;
 
         //pinch
-        pinchAction.action.performed += Pinching;
-        pinchAction.action.canceled += PinchRelease;
+        //pinchAction.action.performed += Pinching;
+        //pinchAction.action.canceled += PinchRelease;
+
+        //point
+        pokeAction.action.performed += Poke;
+        pokeAction.action.canceled += PokeRelease;
     }
 
     private void Awake() => animator = GetComponent<Animator>();
@@ -25,8 +30,11 @@ public class HandAnimation : MonoBehaviour
 
     private void GripRelease(InputAction.CallbackContext obj) => animator.SetFloat("Grip", 0f);
 
-    private void Pinching(InputAction.CallbackContext obj) => animator.SetFloat("Pinch", obj.ReadValue<float>());
+   // private void Pinching(InputAction.CallbackContext obj) => animator.SetFloat("Pinch", obj.ReadValue<float>());
 
-    private void PinchRelease(InputAction.CallbackContext obj) => animator.SetFloat("Pinch", 0f);
+    //private void PinchRelease(InputAction.CallbackContext obj) => animator.SetFloat("Pinch", 0f);
+
+    private void Poke(InputAction.CallbackContext obj) => animator.SetFloat("Poke", obj.ReadValue<float>());
+    private void PokeRelease(InputAction.CallbackContext obj) => animator.SetFloat("Poke", 0f);
 
 }

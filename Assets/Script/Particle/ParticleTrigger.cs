@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class ParticleTrigger : MonoBehaviour
@@ -35,15 +34,18 @@ public class ParticleTrigger : MonoBehaviour
     {
         if (other.CompareTag("Stick"))
         {
+            Transform parentStick = other.transform.parent;
             // Check which stick is involved (left or right) and apply the force accordingly
-            if (other.gameObject == leftHandStick)
+             if (parentStick == leftHandStick.transform)
             {
+                Debug.Log("Calling applied force for left hand");
                 AppliedForce(leftHandAppliedForce);
             }
-            else if (other.gameObject == rightHandStick)
+            else if (parentStick == rightHandStick.transform)
             {
+                Debug.Log("Calling applied force for right hand");
                 AppliedForce(rightHandAppliedForce);
-            }
+            } 
 
             particleSystem.Play();
             audioSource.Play();
@@ -52,11 +54,12 @@ public class ParticleTrigger : MonoBehaviour
 
     private void AppliedForce(float appliedForce)
     {
+        Debug.Log("Applied force");
         var emmision = particleSystem.emission;
         emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
 
         // Normalize applied force for the stick and clamp between 0 and 1
-        float clampDrumStickForce = Mathf.Clamp((appliedForce / 10f), 0f, 1f);
+        float clampDrumStickForce = Mathf.Clamp(appliedForce / 10f, 0f, 1f);
         // Change the volume based on applied force
         audioSource.volume = clampDrumStickForce;
 

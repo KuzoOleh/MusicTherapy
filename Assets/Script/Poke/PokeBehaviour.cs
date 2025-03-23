@@ -14,7 +14,7 @@ public class PokeBehaviour : MonoBehaviour
         
     }
 
-    private void OggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Controller")) {
             Debug.Log("You poked me");

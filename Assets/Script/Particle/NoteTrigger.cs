@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NoteTrigger : MonoBehaviour
 {
+    [SerializeField] private bool doesStickNeeded = false;
     [SerializeField] private List<GameObject> notes;
     [SerializeField] private GameObject leftHandStick;  // Left hand stick
     [SerializeField] private GameObject rightHandStick; // Right hand stick
@@ -14,11 +15,14 @@ public class NoteTrigger : MonoBehaviour
         // Assign particle material and instrument triggers for each note
         foreach (GameObject obj in notes)
         {
+            //add sticks if doesStickNeeded is false
+            if (!doesStickNeeded){
             // Assign instrument triggers for each note
             ParticleTrigger childTrigger = obj.GetComponent<ParticleTrigger>();
 
             // Set the left and right hand sticks for each note
             childTrigger.SetInstrumentTriggers(leftHandStick, rightHandStick);
+            }
 
             Renderer renderer = obj.GetComponent<Renderer>();
             if (renderer != null)

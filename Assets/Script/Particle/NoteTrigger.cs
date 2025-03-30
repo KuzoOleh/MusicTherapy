@@ -34,7 +34,7 @@ public class NoteTrigger : MonoBehaviour
                     ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
                     // Make sure that PS won't play on Awake
                     ps.Stop();
-                    Debug.Log($"Particle material for {obj.name}: {visualFeedback.GetComponent<Renderer>().sharedMaterial}");
+                    //Debug.Log($"Particle material for {obj.name}: {visualFeedback.GetComponent<Renderer>().sharedMaterial}");
                 }
             }
         }

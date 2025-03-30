@@ -19,7 +19,7 @@ public class MeasureSpeedKeyBased : MonoBehaviour
 
         angularVelocity = (axis * angle * Mathf.Deg2Rad) / Time.deltaTime;
         lastRotation = transform.rotation;
-        Debug.Log(lastRotation);
+        //Debug.Log(lastRotation);
     } 
 
 }

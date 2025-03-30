@@ -29,6 +29,6 @@ public class ParticleTriggerKeyBased : MonoBehaviour
         oldPosition = transform.position;
 
         
-        Debug.Log("Key pressed speed: " + speed);
+        //Debug.Log("Key pressed speed: " + speed);
     }
 }

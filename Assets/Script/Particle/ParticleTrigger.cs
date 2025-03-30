@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ParticleTrigger : MonoBehaviour
 {
+    GameManager gameManager;
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject leftHandStick;  // Left hand stick
@@ -9,15 +10,12 @@ public class ParticleTrigger : MonoBehaviour
     [SerializeField] private float leftHandAppliedForce = 0.5f;  // Left hand force
     [SerializeField] private float rightHandAppliedForce = 0.5f; // Right hand force
     const float emmisionDefaultRate = 1000f;
+    private float force = 0f;
 
-    public void SetInstrumentTriggers(GameObject leftStick, GameObject rightStick)
-    {
-        leftHandStick = leftStick;
-        rightHandStick = rightStick;
-    }
 
-    private void Start()
+    private void Awake()
     {
+        gameManager = FindFirstObjectByType<GameManager>();
         particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
     }
 
@@ -30,6 +28,13 @@ public class ParticleTrigger : MonoBehaviour
             rightHandAppliedForce = rightHandStick.GetComponent<MeasureSpeed>().angularVelocity.x;
     }
 
+        public void SetInstrumentTriggers(GameObject leftStick, GameObject rightStick)
+    {
+        leftHandStick = leftStick;
+        rightHandStick = rightStick;
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Stick"))
@@ -38,12 +43,12 @@ public class ParticleTrigger : MonoBehaviour
             // Check which stick is involved (left or right) and apply the force accordingly
              if (parentStick == leftHandStick.transform)
             {
-                Debug.Log("Calling applied force for left hand");
+                gameManager.HitInstrument(gameObject.name, force);
                 AppliedForce(leftHandAppliedForce);
             }
             else if (parentStick == rightHandStick.transform)
             {
-                Debug.Log("Calling applied force for right hand");
+                gameManager.HitInstrument(gameObject.name, force);
                 AppliedForce(rightHandAppliedForce);
             } 
 
@@ -54,7 +59,6 @@ public class ParticleTrigger : MonoBehaviour
 
     private void AppliedForce(float appliedForce)
     {
-        Debug.Log("Applied force");
         var emmision = particleSystem.emission;
         emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
 
@@ -66,7 +70,9 @@ public class ParticleTrigger : MonoBehaviour
         // Change the emission rate based on applied force
         float emmisionRate = particleSystem.emission.rateOverTime.constant * clampDrumStickForce;
         emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionRate);
+        force = clampDrumStickForce;
 
-        Debug.Log("Rate Over Time: " + emmision.rateOverTime.constant);
+
+        //Debug.Log("Rate Over Time: " + emmision.rateOverTime.constant);
     }
 }

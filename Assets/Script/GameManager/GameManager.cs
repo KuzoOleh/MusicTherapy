@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-// Class to store instrument statistics (hit count and applied forces)
-[System.Serializable]
-public class InstrumentStats 
+[System.Serializable] public class InstrumentStats 
 {
     public int hitCount = 0;
     public List<float> appliedForces = new List<float>();

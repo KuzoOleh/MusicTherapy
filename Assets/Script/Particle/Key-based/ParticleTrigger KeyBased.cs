@@ -6,61 +6,98 @@ public class ParticleTriggerKeyBased : MonoBehaviour
 {
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private AudioSource audioSource;
-    
+
     [SerializeField] private float pressedSpeed = 0f;
     [SerializeField] private bool isPressed = false;
 
     public XRBaseInteractable interactable;
-    const float emmisionDefaultRate = 1000f;
+    const float emissionDefaultRate = 1000f;
 
-    Vector3 oldPosition;
-    float speed;
+    private Vector3 oldPosition;
+    private float speed;
+    private bool particleFound = false;
 
     private void Start()
     {
-        particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
+        TryAssignParticleSystem();
         oldPosition = transform.position;
-        audioSource.Stop();
+
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
     }
 
-    public void Update()
+    private void Update()
     {
+        // Check for particle system if not yet found
+        if (!particleFound && particleSystem == null)
+        {
+            TryAssignParticleSystem();
+        }
+
+        // Calculate press speed
         Vector3 displacement = transform.position - oldPosition;
-        speed = displacement.magnitude/ Time.deltaTime;
+        speed = displacement.magnitude / Time.deltaTime;
         pressedSpeed = speed;
         oldPosition = transform.position;
-        //Debug.Log("Key pressed speed: " + speed);
     }
+
+    private void TryAssignParticleSystem()
+    {
+        particleSystem = GetComponentInChildren<ParticleSystem>();
+        if (particleSystem != null)
+        {
+            particleFound = true;
+            Debug.Log("Particle system dynamically assigned.");
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Hand")){
-            if(!isPressed){
+        if (other.CompareTag("Hand"))
+        {
+            if (!isPressed)
+            {
                 isPressed = true;
                 pressedNote();
                 Debug.Log("Hands entered");
             }
-
-        }      
+        }
     }
+
     private void OnTriggerExit(Collider other)
     {
-     if(other.CompareTag("Hand")){
-        isPressed = false;
-        Debug.Log("Hands exited");
-     }   
+        if (other.CompareTag("Hand"))
+        {
+            isPressed = false;
+            Debug.Log("Hands exited");
+        }
     }
 
-    private void pressedNote(){
-            audioSource.volume = pressedSpeed * 10f;
+    private void pressedNote()
+    {
+        if (audioSource != null)
+        {
+            audioSource.volume = Mathf.Clamp01(pressedSpeed * 10f);
             audioSource.Play();
-            var emmision = particleSystem.emission;
-            emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionDefaultRate);
+        }
 
-            float emmisionRate = particleSystem.emission.rateOverTime.constant * pressedSpeed;
-            emmision.rateOverTime = new ParticleSystem.MinMaxCurve(emmisionRate);
+        if (particleSystem != null)
+        {
+            var emission = particleSystem.emission;
+            emission.rateOverTime = new ParticleSystem.MinMaxCurve(emissionDefaultRate);
+
+            float emissionRate = emissionDefaultRate * pressedSpeed;
+            emission.rateOverTime = new ParticleSystem.MinMaxCurve(emissionRate);
 
             particleSystem.Play();
 
-            Debug.Log("particle system is up");
+            Debug.Log("Particle system is playing");
+        }
+        else
+        {
+            Debug.LogWarning("No Particle System found when trying to play effect.");
+        }
     }
 }

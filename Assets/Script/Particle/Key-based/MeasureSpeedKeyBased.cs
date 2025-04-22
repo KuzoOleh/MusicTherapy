@@ -5,6 +5,7 @@ public class MeasureSpeedKeyBased : MonoBehaviour
 
     private Quaternion lastRotation;
     public Vector3 angularVelocity {get; set; }
+
     void Awake()
     {
         lastRotation = transform.rotation;

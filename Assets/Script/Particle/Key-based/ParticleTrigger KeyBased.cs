@@ -4,6 +4,8 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class ParticleTriggerKeyBased : MonoBehaviour
 {
+    GameManager gameManager;
+
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private AudioSource audioSource;
 
@@ -17,6 +19,10 @@ public class ParticleTriggerKeyBased : MonoBehaviour
     private float speed;
     private bool particleFound = false;
 
+    private void Awake()
+    {
+        gameManager = FindFirstObjectByType<GameManager>();
+    }
     private void Start()
     {
         TryAssignParticleSystem();
@@ -59,6 +65,7 @@ public class ParticleTriggerKeyBased : MonoBehaviour
         {
             if (!isPressed)
             {
+                gameManager.HitInstrument(gameObject.name, pressedSpeed);
                 isPressed = true;
                 pressedNote();
                 Debug.Log("Hands entered");

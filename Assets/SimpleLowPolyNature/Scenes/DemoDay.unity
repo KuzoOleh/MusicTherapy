@@ -9071,6 +9071,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orderDisplayText: {fileID: 0}
   surveyCanvas: {fileID: 871324175}
+  finishButton: {fileID: 345725557}
+  requiredButtonCount: 8
 --- !u!1001 &879306994
 PrefabInstance:
   m_ObjectHideFlags: 0

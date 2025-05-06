@@ -5,28 +5,34 @@ using UnityEngine.UI;
 public class ButtonOrderTracker : MonoBehaviour
 {
     private GameManager gameManager;
-    private List<string> buttonPressOrder = new List<string>(); // Stores the order of button presses
-    private HashSet<string> pressedButtons = new HashSet<string>(); // Tracks already pressed buttons
+    private List<string> buttonPressOrder = new List<string>();
+    private HashSet<string> pressedButtons = new HashSet<string>();
 
     [SerializeField] private Text orderDisplayText;
-    [SerializeField] private GameObject surveyCanvas; // Reference to the survey canvas
+    [SerializeField] private GameObject surveyCanvas;
+    [SerializeField] private Button finishButton; // Reference to the Finish button
+    [SerializeField] private int requiredButtonCount = 3; // Number of buttons that need to be pressed before enabling Finish
 
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+
+        // Disable the Finish button initially
+        if (finishButton != null)
+        {
+            finishButton.interactable = false;
+        }
     }
 
     public void OnButtonPressed(Button button)
     {
         string buttonName = button.name;
 
-        // Ensure the button is pressed only once
         if (!pressedButtons.Contains(buttonName))
         {
             buttonPressOrder.Add(buttonName);
             pressedButtons.Add(buttonName);
 
-            // Update the UI text
             if (orderDisplayText != null)
             {
                 orderDisplayText.text = $"Order: {string.Join(", ", buttonPressOrder)}";
@@ -35,9 +41,14 @@ public class ButtonOrderTracker : MonoBehaviour
             Debug.Log($"Button pressed: {buttonName}");
             Debug.Log($"Current order: {string.Join(", ", buttonPressOrder)}");
 
-            // Record the button press in GameManager
             gameManager.RecordButtonPress(buttonName);
-            button.interactable = false; // Disable the button after pressing
+            button.interactable = false;
+
+            // Enable Finish button if all required buttons have been pressed
+            if (pressedButtons.Count >= requiredButtonCount && finishButton != null)
+            {
+                finishButton.interactable = true;
+            }
         }
         else
         {
@@ -49,8 +60,8 @@ public class ButtonOrderTracker : MonoBehaviour
     {
         if (surveyCanvas != null)
         {
-            surveyCanvas.SetActive(false); // Hide the canvas
-            surveyCanvas = null; // Nullify the reference
+            surveyCanvas.SetActive(false);
+            surveyCanvas = null;
             Debug.Log("Survey finished. Canvas hidden and nullified.");
         }
         else

@@ -11,6 +11,7 @@ public class ParticleTrigger : MonoBehaviour
     [SerializeField] private float rightHandAppliedForce = 0.5f; // Right hand force
     const float emmisionDefaultRate = 1000f;
     private float force = 0f;
+    [SerializeField] private bool doesStickNeeded = false; // Set this per instrument in the Inspector
 
 
     private void Awake()
@@ -28,12 +29,10 @@ public class ParticleTrigger : MonoBehaviour
             rightHandAppliedForce = rightHandStick.GetComponent<MeasureSpeed>().angularVelocity.x;
     }
 
-        public void SetInstrumentTriggers(GameObject leftStick, GameObject rightStick)
+    public bool DoesStickNeeded()
     {
-        leftHandStick = leftStick;
-        rightHandStick = rightStick;
+        return doesStickNeeded;
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -75,4 +74,17 @@ public class ParticleTrigger : MonoBehaviour
 
         //Debug.Log("Rate Over Time: " + emmision.rateOverTime.constant);
     }
+
+    public void SetInstrumentTriggers(GameObject leftStick, GameObject rightStick)
+    {
+        leftHandStick = leftStick;
+        rightHandStick = rightStick;
+    }
+
+
+    public void SetParticleSystem(ParticleSystem ps)
+    {
+        this.particleSystem = ps;
+    }
+
 }

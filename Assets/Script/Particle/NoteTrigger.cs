@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NoteTrigger : MonoBehaviour
 {
-    [SerializeField] private bool doesStickNeeded = false;
     [SerializeField] private List<GameObject> notes;
     [SerializeField] private GameObject leftHandStick;  // Left hand stick
     [SerializeField] private GameObject rightHandStick; // Right hand stick
@@ -12,16 +11,14 @@ public class NoteTrigger : MonoBehaviour
 
     void Awake()
     {
-        // Assign particle material and instrument triggers for each note
         foreach (GameObject obj in notes)
         {
-            //add sticks if doesStickNeeded is false
-            if (!doesStickNeeded){
-            // Assign instrument triggers for each note
             ParticleTrigger childTrigger = obj.GetComponent<ParticleTrigger>();
 
-            // Set the left and right hand sticks for each note
-            childTrigger.SetInstrumentTriggers(leftHandStick, rightHandStick);
+            // Check dynamically if the instrument needs sticks
+            if (childTrigger.DoesStickNeeded())
+            {
+                childTrigger.SetInstrumentTriggers(leftHandStick, rightHandStick);
             }
 
             Renderer renderer = obj.GetComponent<Renderer>();
@@ -31,10 +28,13 @@ public class NoteTrigger : MonoBehaviour
                 {
                     visualFeedback.GetComponent<Renderer>().material = mat;
                     GameObject particleInstance = Instantiate(visualFeedback, obj.transform.position, quaternion.identity, obj.transform);
+
+                    // Assign the instantiated ParticleSystem directly to the ParticleTrigger
                     ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
-                    // Make sure that PS won't play on Awake
-                    ps.Stop();
-                    //Debug.Log($"Particle material for {obj.name}: {visualFeedback.GetComponent<Renderer>().sharedMaterial}");
+                    ps.Stop(); // Make sure it doesn't play on awake
+                    childTrigger.SetParticleSystem(ps);
+
+                    Debug.Log($"Particle material for {obj.name}: {visualFeedback.GetComponent<Renderer>().sharedMaterial}");
                 }
             }
         }

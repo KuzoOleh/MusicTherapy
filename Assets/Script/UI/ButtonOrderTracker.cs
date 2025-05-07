@@ -10,17 +10,20 @@ public class ButtonOrderTracker : MonoBehaviour
 
     [SerializeField] private Text orderDisplayText;
     [SerializeField] private GameObject surveyCanvas;
-    [SerializeField] private Button finishButton; // Reference to the Finish button
-    [SerializeField] private int requiredButtonCount = 3; // Number of buttons that need to be pressed before enabling Finish
+    [SerializeField] private Button finishButton;
+    [SerializeField] private int requiredButtonCount = 8;
+
+    [Header("Test Configuration")]
+    [SerializeField] private bool isSecondTest = false;
 
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
 
-        // Disable the Finish button initially
         if (finishButton != null)
         {
             finishButton.interactable = false;
+            finishButton.gameObject.SetActive(false);
         }
     }
 
@@ -41,12 +44,20 @@ public class ButtonOrderTracker : MonoBehaviour
             Debug.Log($"Button pressed: {buttonName}");
             Debug.Log($"Current order: {string.Join(", ", buttonPressOrder)}");
 
-            gameManager.RecordButtonPress(buttonName);
+            if (gameManager != null)
+            {
+                if (isSecondTest)
+                    gameManager.RecordSecondTestButtonPress(buttonName);
+                else
+                    gameManager.RecordButtonPress(buttonName);
+            }
+
             button.interactable = false;
 
-            // Enable Finish button if all required buttons have been pressed
+            // Enable and show Finish button if enough buttons have been pressed
             if (pressedButtons.Count >= requiredButtonCount && finishButton != null)
             {
+                finishButton.gameObject.SetActive(true);
                 finishButton.interactable = true;
             }
         }
@@ -61,17 +72,69 @@ public class ButtonOrderTracker : MonoBehaviour
         if (surveyCanvas != null)
         {
             surveyCanvas.SetActive(false);
-            surveyCanvas = null;
-            Debug.Log("Survey finished. Canvas hidden and nullified.");
+            Debug.Log("Survey finished. Canvas hidden.");
+        }
+
+        if (isSecondTest)
+        {
+            // Second test is done — save data and quit
+            Debug.Log("Second test completed. Saving and quitting...");
+
+            if (gameManager != null)
+            {
+                gameManager.SaveButtonPressOrderToCSV();
+
+                // Call private SaveStatsToCSV() via reflection
+                var method = typeof(GameManager).GetMethod("SaveStatsToCSV", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                method?.Invoke(gameManager, null);
+            }
+
+            Application.Quit();
+
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
         }
         else
         {
-            Debug.LogWarning("Survey canvas is already null.");
+            // Prepare for second test
+            isSecondTest = true;
+            ResetSurvey();
+        }
+    }
+
+    public void ResetSurvey()
+    {
+        buttonPressOrder.Clear();
+        pressedButtons.Clear();
+
+        foreach (Button button in GetComponentsInChildren<Button>())
+        {
+            if (button != finishButton)
+            {
+                button.interactable = true;
+            }
+        }
+
+        if (finishButton != null)
+        {
+            finishButton.interactable = false;
+            finishButton.gameObject.SetActive(false);
+        }
+
+        if (orderDisplayText != null)
+        {
+            orderDisplayText.text = "Order:";
         }
     }
 
     public List<string> GetButtonPressOrder()
     {
         return buttonPressOrder;
+    }
+
+    public void SetTestPhase(bool isSecond)
+    {
+        isSecondTest = isSecond;
     }
 }

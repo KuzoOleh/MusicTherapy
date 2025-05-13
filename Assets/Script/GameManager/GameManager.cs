@@ -14,16 +14,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float timeRelapsed = 0f;
 
     [SerializeField] private Dictionary<string, InstrumentStats> instrumentPlayCount = new Dictionary<string, InstrumentStats>();
-    [SerializeField] private List<string> buttonPressOrder = new List<string>();               // First Lüscher Test
-    [SerializeField] private List<string> secondTestButtonPressOrder = new List<string>();    // Second Lüscher Test
+    [SerializeField] private List<string> buttonPressOrder = new List<string>();               
+    [SerializeField] private List<string> secondTestButtonPressOrder = new List<string>();    
 
     private string patientName;
     private string therapistName;
 
     void Awake()
     {
-        Debug.Log(Application.persistentDataPath); // Debug path for persistent data storage
-        LoadPatientAndTherapistInfo(); // Load patient and therapist info
+        Debug.Log(Application.persistentDataPath);
+        LoadPatientAndTherapistInfo(); 
     }
 
     void Update()
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         instrumentPlayCount[instrument].hitCount++;
         instrumentPlayCount[instrument].appliedForces.Add(appliedForce);
 
-        Debug.Log($"Instrument: {instrument} | Hit Count: {instrumentPlayCount[instrument].hitCount} | Applied Force: {appliedForce}");
+        Debug.Log($"Інструмент: {instrument} | Кількість ударів: {instrumentPlayCount[instrument].hitCount} | Прикладена сила: {appliedForce}");
     }
 
     // First Lüscher Test
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         if (!buttonPressOrder.Contains(buttonName))
         {
             buttonPressOrder.Add(buttonName);
-            Debug.Log($"[First Test] Button pressed: {buttonName}");
+            Debug.Log($"[Перший тест] Натиснута кнопка: {buttonName}");
         }
         else
         {
@@ -63,17 +63,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Second Lüscher Test
+    // Second Luscher Test
     public void RecordSecondTestButtonPress(string buttonName)
     {
         if (!secondTestButtonPressOrder.Contains(buttonName))
         {
             secondTestButtonPressOrder.Add(buttonName);
-            Debug.Log($"[Second Test] Button pressed: {buttonName}");
+            Debug.Log($"[Другий тест] Натиснута кнопка: {buttonName}");
         }
         else
         {
-            Debug.Log($"[Second Test] Button {buttonName} was already pressed.");
+            Debug.Log($"[Другий тест] Button {buttonName} was already pressed.");
         }
     }
 
@@ -84,14 +84,14 @@ public class GameManager : MonoBehaviour
 
         using (StreamWriter writer = new StreamWriter(filePath))
         {
-            writer.WriteLine($"Patient: {patientName}");
-            writer.WriteLine($"Therapist: {therapistName}");
-            writer.WriteLine($"Total time spent playing: {timeRelapsed:F2} sec\n");
+            writer.WriteLine($"Пацієнт: {patientName}");
+            writer.WriteLine($"Спеціаліст: {therapistName}");
+            writer.WriteLine($"Загальний проведений час: {timeRelapsed:F2} sec\n");
 
             foreach (var entry in instrumentPlayCount)
             {
-                writer.WriteLine($"Instrument: {entry.Key}");
-                writer.WriteLine("Hit Count, Applied Force");
+                writer.WriteLine($"Інструмент: {entry.Key}");
+                writer.WriteLine("Кількість ударів, Прикладена сила");
 
                 for (int i = 0; i < entry.Value.appliedForces.Count; i++)
                 {
@@ -100,16 +100,16 @@ public class GameManager : MonoBehaviour
                 writer.WriteLine();
             }
 
-            // First Lüscher Test
-            writer.WriteLine("First Lusher Test Button Press Order:");
+            // First Luscher Test
+            writer.WriteLine("Перше тестування Люшера:");
             for (int i = 0; i < buttonPressOrder.Count; i++)
             {
                 writer.WriteLine($"{i + 1}, {buttonPressOrder[i]}");
             }
             writer.WriteLine();
 
-            // Second Lüscher Test
-            writer.WriteLine("Second Lusher Test Button Press Order:");
+            // Second Luscher Test
+            writer.WriteLine("Друге тестування Люшера:");
             for (int i = 0; i < secondTestButtonPressOrder.Count; i++)
             {
                 writer.WriteLine($"{i + 1}, {secondTestButtonPressOrder[i]}");
@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
         SaveStatsToCSV();
     }
 
-    // Optional Reset Methods
+ 
     public void ResetFirstTestOrder()
     {
         buttonPressOrder.Clear();

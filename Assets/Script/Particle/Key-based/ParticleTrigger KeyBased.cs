@@ -1,92 +1,69 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class ParticleTriggerKeyBased : MonoBehaviour
+public class VRNoteTrigger : MonoBehaviour
 {
-    GameManager gameManager;
+    private GameManager gameManager;
 
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private AudioSource audioSource;
 
-    [SerializeField] private float pressedSpeed = 0f;
-    [SerializeField] private bool isPressed = false;
-
-    public XRBaseInteractable interactable;
-    const float emissionDefaultRate = 1000f;
-
     private Vector3 oldPosition;
-    private float speed;
-    private bool particleFound = false;
+    private float pressedSpeed = 0f;
+
+    private bool isPressed = false;
+    private const float emissionDefaultRate = 300f;
+    private const float pressThreshold = 0.1f; // Adjust based on how much movement counts as a "press"
 
     private void Awake()
     {
         gameManager = FindFirstObjectByType<GameManager>();
     }
+
     private void Start()
     {
-        TryAssignParticleSystem();
-        oldPosition = transform.position;
+        if (particleSystem == null)
+        {
+            particleSystem = GetComponentInChildren<ParticleSystem>();
+            if (particleSystem != null)
+                Debug.Log("Particle system auto-assigned.");
+            else
+                Debug.LogWarning("No Particle System found.");
+        }
 
         if (audioSource != null)
-        {
             audioSource.Stop();
-        }
+
+        oldPosition = transform.position;
     }
 
     private void Update()
     {
-        // Check for particle system if not yet found
-        if (!particleFound && particleSystem == null)
-        {
-            TryAssignParticleSystem();
-        }
-
         // Calculate press speed
         Vector3 displacement = transform.position - oldPosition;
-        speed = displacement.magnitude / Time.deltaTime;
-        pressedSpeed = speed;
+        pressedSpeed = displacement.magnitude / Time.deltaTime;
         oldPosition = transform.position;
-    }
 
-    private void TryAssignParticleSystem()
-    {
-        particleSystem = GetComponentInChildren<ParticleSystem>();
-        if (particleSystem != null)
+        // Detect "press" based on speed threshold
+        if (pressedSpeed > pressThreshold && !isPressed)
         {
-            particleFound = true;
-            Debug.Log("Particle system dynamically assigned.");
-        }
-    }
+            isPressed = true;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Hand"))
-        {
-            if (!isPressed)
-            {
-                gameManager.HitInstrument(gameObject.name, pressedSpeed);
-                isPressed = true;
-                pressedNote();
-                Debug.Log("Hands entered");
-            }
-        }
-    }
+            gameManager?.HitInstrument(gameObject.name, pressedSpeed);
+            PlayEffects();
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Hand"))
+            Debug.Log("Note pressed via movement.");
+        }
+        else if (pressedSpeed <= 0.01f)
         {
             isPressed = false;
-            Debug.Log("Hands exited");
         }
     }
 
-    private void pressedNote()
+    private void PlayEffects()
     {
         if (audioSource != null)
         {
-            audioSource.volume = Mathf.Clamp01(pressedSpeed * 10f);
+            audioSource.volume = 0.5f; // default volume
             audioSource.Play();
         }
 
@@ -94,17 +71,9 @@ public class ParticleTriggerKeyBased : MonoBehaviour
         {
             var emission = particleSystem.emission;
             emission.rateOverTime = new ParticleSystem.MinMaxCurve(emissionDefaultRate);
-
-            float emissionRate = emissionDefaultRate * pressedSpeed;
-            emission.rateOverTime = new ParticleSystem.MinMaxCurve(emissionRate);
-
             particleSystem.Play();
 
-            Debug.Log("Particle system is playing");
-        }
-        else
-        {
-            Debug.LogWarning("No Particle System found when trying to play effect.");
+            Debug.Log("Particle system played.");
         }
     }
 }

@@ -51,7 +51,7 @@ public class VRNoteTrigger : MonoBehaviour
             gameManager?.HitInstrument(gameObject.name, pressedSpeed);
             PlayEffects();
 
-            Debug.Log("Note pressed via movement.");
+            Debug.Log("Note pressed via movement." + gameObject.name);
         }
         else if (pressedSpeed <= 0.01f)
         {
@@ -65,6 +65,7 @@ public class VRNoteTrigger : MonoBehaviour
         {
             audioSource.volume = 0.5f; // default volume
             audioSource.Play();
+            Debug.Log("Audio played on:" + gameObject.name);
         }
 
         if (particleSystem != null)

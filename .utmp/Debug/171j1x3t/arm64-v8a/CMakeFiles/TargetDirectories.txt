@@ -1,0 +1,5 @@
+E:/Politech_Diplom/MusicTherapy/MusicTherapy/.utmp/Debug/171j1x3t/arm64-v8a/CMakeFiles/edit_cache.dir
+E:/Politech_Diplom/MusicTherapy/MusicTherapy/.utmp/Debug/171j1x3t/arm64-v8a/CMakeFiles/rebuild_cache.dir
+E:/Politech_Diplom/MusicTherapy/MusicTherapy/.utmp/Debug/171j1x3t/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+E:/Politech_Diplom/MusicTherapy/MusicTherapy/.utmp/Debug/171j1x3t/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+E:/Politech_Diplom/MusicTherapy/MusicTherapy/.utmp/Debug/171j1x3t/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

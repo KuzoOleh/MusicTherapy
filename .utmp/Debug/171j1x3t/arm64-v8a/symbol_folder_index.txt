@@ -1,0 +1,1 @@
+E:\Politech_Diplom\MusicTherapy\MusicTherapy\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\Debug\171j1x3t\obj\arm64-v8a

@@ -13,16 +13,16 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private float timeRelapsed = 0f;
 
-    [SerializeField] private Dictionary<string, InstrumentStats> instrumentPlayCount = new Dictionary<string, InstrumentStats>();
-    [SerializeField] private List<string> buttonPressOrder = new List<string>();               
-    [SerializeField] private List<string> secondTestButtonPressOrder = new List<string>();    
+    private Dictionary<string, InstrumentStats> instrumentPlayCount = new Dictionary<string, InstrumentStats>();
+    private List<string> buttonPressOrder = new List<string>();               
+    private List<string> secondTestButtonPressOrder = new List<string>();    
 
     private string patientName;
     private string therapistName;
 
     void Awake()
     {
-        Debug.Log(Application.persistentDataPath);
+        Debug.Log("Persistent Data Path: " + Application.persistentDataPath);
         LoadPatientAndTherapistInfo(); 
     }
 
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
 
     private void SaveStatsToCSV()
     {
-        string filePath = Path.Combine(Application.dataPath, "instrument_data.csv");
+        string filePath = Path.Combine(Application.persistentDataPath, "instrument_data.csv");
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
         using (StreamWriter writer = new StreamWriter(filePath))
@@ -100,7 +100,6 @@ public class GameManager : MonoBehaviour
                 writer.WriteLine();
             }
 
-            // First Luscher Test
             writer.WriteLine("Перше тестування Люшера:");
             for (int i = 0; i < buttonPressOrder.Count; i++)
             {
@@ -108,7 +107,6 @@ public class GameManager : MonoBehaviour
             }
             writer.WriteLine();
 
-            // Second Luscher Test
             writer.WriteLine("Друге тестування Люшера:");
             for (int i = 0; i < secondTestButtonPressOrder.Count; i++)
             {
@@ -121,7 +119,7 @@ public class GameManager : MonoBehaviour
 
     public void SaveButtonPressOrderToCSV()
     {
-        string filePath = Path.Combine(Application.dataPath, "first_lusher_test.csv");
+        string filePath = Path.Combine(Application.persistentDataPath, "first_lusher_test.csv");
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
         using (StreamWriter writer = new StreamWriter(filePath))
@@ -138,7 +136,7 @@ public class GameManager : MonoBehaviour
 
     private void LoadPatientAndTherapistInfo()
     {
-        string filePath = Path.Combine(Application.dataPath, "patient_therapist_info.txt");
+        string filePath = Path.Combine(Application.persistentDataPath, "patient_therapist_info.txt");
 
         if (File.Exists(filePath))
         {
@@ -161,13 +159,42 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+    public void SavePatientAndTherapistInfo()
     {
-        SaveButtonPressOrderToCSV();
-        SaveStatsToCSV();
+        string filePath = Path.Combine(Application.persistentDataPath, "patient_therapist_info.txt");
+        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+        using (StreamWriter writer = new StreamWriter(filePath))
+        {
+            writer.WriteLine(patientName);
+            writer.WriteLine(therapistName);
+        }
+
+        Debug.Log("Patient and Therapist info saved.");
     }
 
- 
+    public void ExportAllData()
+    {
+        SavePatientAndTherapistInfo();
+        SaveStatsToCSV();
+        SaveButtonPressOrderToCSV();
+    }
+
+    public void SetPatientName(string name)
+    {
+        patientName = name;
+    }
+
+    public void SetTherapistName(string name)
+    {
+        therapistName = name;
+    }
+
+    private void OnApplicationQuit()
+    {
+        ExportAllData();
+    }
+
     public void ResetFirstTestOrder()
     {
         buttonPressOrder.Clear();

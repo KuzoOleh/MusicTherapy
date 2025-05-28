@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class VRNoteTrigger : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class VRNoteTrigger : MonoBehaviour
 
     private bool isPressed = false;
     private const float emissionDefaultRate = 300f;
-    private const float pressThreshold = 0.1f; // Adjust based on how much movement counts as a "press"
+    private const float pressThreshold = 0.1f;
+
+    private bool canHit = false;
 
     private void Awake()
     {
@@ -34,24 +37,33 @@ public class VRNoteTrigger : MonoBehaviour
             audioSource.Stop();
 
         oldPosition = transform.position;
+
+        // Start coroutine to enable hit after 1 second
+        StartCoroutine(EnableHitAfterDelay(1f));
+    }
+
+    private IEnumerator EnableHitAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canHit = true;
     }
 
     private void Update()
     {
-        // Calculate press speed
         Vector3 displacement = transform.position - oldPosition;
         pressedSpeed = displacement.magnitude / Time.deltaTime;
         oldPosition = transform.position;
 
-        // Detect "press" based on speed threshold
         if (pressedSpeed > pressThreshold && !isPressed)
         {
             isPressed = true;
 
-            gameManager?.HitInstrument(gameObject.name, pressedSpeed);
-            PlayEffects();
-
-            Debug.Log("Note pressed via movement." + gameObject.name);
+            if (canHit)
+            {
+                gameManager?.HitInstrument(gameObject.name, pressedSpeed);
+                PlayEffects();
+                Debug.Log("Note pressed via movement." + gameObject.name);
+            }
         }
         else if (pressedSpeed <= 0.01f)
         {
@@ -63,7 +75,7 @@ public class VRNoteTrigger : MonoBehaviour
     {
         if (audioSource != null)
         {
-            audioSource.volume = 0.5f; // default volume
+            audioSource.volume = 0.5f;
             audioSource.Play();
             Debug.Log("Audio played on:" + gameObject.name);
         }
@@ -73,7 +85,6 @@ public class VRNoteTrigger : MonoBehaviour
             var emission = particleSystem.emission;
             emission.rateOverTime = new ParticleSystem.MinMaxCurve(emissionDefaultRate);
             particleSystem.Play();
-
             Debug.Log("Particle system played.");
         }
     }

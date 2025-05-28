@@ -3,44 +3,41 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject pausePanel;      // Only the visible part of pause UI
-    [SerializeField] private GameObject surveyPanel;     // Only the visible part of survey UI
+    [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject surveyPanel;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Slider volumeSlider;
 
-    private bool isSurveyPendingQuit = false;
+    private CanvasGroup surveyCanvasGroup;
 
-    private bool isPaused = false;
-
-    void Start()
+    private void Start()
     {
-
         if (volumeSlider != null && audioSource != null)
         {
             volumeSlider.value = audioSource.volume;
             volumeSlider.onValueChanged.AddListener(ChangeVolume);
         }
+
+        if (surveyPanel != null)
+        {
+            surveyCanvasGroup = surveyPanel.GetComponent<CanvasGroup>();
+            if (surveyCanvasGroup == null)
+            {
+                surveyCanvasGroup = surveyPanel.AddComponent<CanvasGroup>();
+            }
+        }
     }
 
-    public void ShowSurveyThenQuit()
-    {   
-        surveyPanel.SetActive(true); // Show survey UI
-        isSurveyPendingQuit = true;
-     
+    public void OnExitPressed()
+    {
+        if (surveyCanvasGroup != null)
+        {
+            surveyCanvasGroup.alpha = 1;
+            surveyCanvasGroup.interactable = true;
+            surveyCanvasGroup.blocksRaycasts = true;
+            Debug.Log("Survey panel restored.");
+        }
     }
-
-private void ConfirmExit()
-{
-    surveyPanel.SetActive(true);
-//     if(isSurveyPendingQuit)
-//     {
-// #if UNITY_EDITOR
-//     UnityEditor.EditorApplication.isPlaying = false;
-// #else
-//     Application.Quit();
-// #endif
-// }
-}
 
     private void ChangeVolume(float value)
     {

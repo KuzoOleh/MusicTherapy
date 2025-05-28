@@ -16,6 +16,8 @@ public class ButtonOrderTracker : MonoBehaviour
     [Header("Test Configuration")]
     [SerializeField] private bool isSecondTest = false;
 
+    private CanvasGroup surveyCanvasGroup;
+
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -24,6 +26,15 @@ public class ButtonOrderTracker : MonoBehaviour
         {
             finishButton.interactable = false;
             finishButton.gameObject.SetActive(false);
+        }
+
+        if (surveyCanvas != null)
+        {
+            surveyCanvasGroup = surveyCanvas.GetComponent<CanvasGroup>();
+            if (surveyCanvasGroup == null)
+            {
+                surveyCanvasGroup = surveyCanvas.AddComponent<CanvasGroup>();
+            }
         }
     }
 
@@ -54,7 +65,6 @@ public class ButtonOrderTracker : MonoBehaviour
 
             button.interactable = false;
 
-            // Enable and show Finish button if enough buttons have been pressed
             if (pressedButtons.Count >= requiredButtonCount && finishButton != null)
             {
                 finishButton.gameObject.SetActive(true);
@@ -69,22 +79,22 @@ public class ButtonOrderTracker : MonoBehaviour
 
     public void OnFinishSurvey()
     {
-        if (surveyCanvas != null)
+        if (surveyCanvasGroup != null)
         {
-            surveyCanvas.SetActive(false);
+            surveyCanvasGroup.alpha = 0;
+            surveyCanvasGroup.interactable = false;
+            surveyCanvasGroup.blocksRaycasts = false;
             Debug.Log("Survey finished. Canvas hidden.");
         }
 
         if (isSecondTest)
         {
-            // Second test is done — save data and quit
             Debug.Log("Second test completed. Saving and quitting...");
 
             if (gameManager != null)
             {
                 gameManager.SaveButtonPressOrderToCSV();
 
-                // Call private SaveStatsToCSV() via reflection
                 var method = typeof(GameManager).GetMethod("SaveStatsToCSV", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 method?.Invoke(gameManager, null);
             }
@@ -97,7 +107,6 @@ public class ButtonOrderTracker : MonoBehaviour
         }
         else
         {
-            // Prepare for second test
             isSecondTest = true;
             ResetSurvey();
         }

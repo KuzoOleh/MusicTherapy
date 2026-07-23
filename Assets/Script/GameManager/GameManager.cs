@@ -19,11 +19,26 @@ public class GameManager : MonoBehaviour
 
     private string patientName;
     private string therapistName;
+    private string sessionId;
 
     void Awake()
     {
         Debug.Log("Persistent Data Path: " + Application.persistentDataPath);
-        LoadPatientAndTherapistInfo(); 
+        sessionId = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        LoadPatientAndTherapistInfo();
+    }
+
+    // Builds a per-session, filesystem-safe file name so a new session never
+    // overwrites a previous patient's exported data.
+    private string GetSessionFileName(string baseName)
+    {
+        string safePatientName = string.IsNullOrWhiteSpace(patientName) ? "unknown" : patientName;
+        foreach (char invalidChar in Path.GetInvalidFileNameChars())
+        {
+            safePatientName = safePatientName.Replace(invalidChar, '_');
+        }
+
+        return $"{baseName}_{safePatientName}_{sessionId}.csv";
     }
 
     void Update()
@@ -79,7 +94,7 @@ public class GameManager : MonoBehaviour
 
     private void SaveStatsToCSV()
     {
-        string filePath = Path.Combine(Application.persistentDataPath, "instrument_data.csv");
+        string filePath = Path.Combine(Application.persistentDataPath, GetSessionFileName("instrument_data"));
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
         using (StreamWriter writer = new StreamWriter(filePath))
@@ -119,7 +134,7 @@ public class GameManager : MonoBehaviour
 
     public void SaveButtonPressOrderToCSV()
     {
-        string filePath = Path.Combine(Application.persistentDataPath, "first_lusher_test.csv");
+        string filePath = Path.Combine(Application.persistentDataPath, GetSessionFileName("first_lusher_test"));
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
         using (StreamWriter writer = new StreamWriter(filePath))

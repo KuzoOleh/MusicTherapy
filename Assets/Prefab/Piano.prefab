@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 7247327434182260614}
   - component: {fileID: 6537591814154688829}
   m_Layer: 0
-  m_Name: keybroad_set_01.100
+  m_Name: D#2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -765,7 +765,7 @@ GameObject:
   - component: {fileID: 7203654379792603203}
   - component: {fileID: 136655286687554816}
   m_Layer: 0
-  m_Name: keybroad_set_01.015
+  m_Name: G1_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -886,9 +886,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 90b805c5dc1b61d40b325a0deb49b027, type: 3}
+  m_Resource: {fileID: 8300000, guid: 90b805c5dc1b61d40b325a0deb49b027, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1598,7 +1598,7 @@ GameObject:
   - component: {fileID: 3587094538281987116}
   - component: {fileID: 4482813878715971293}
   m_Layer: 0
-  m_Name: keybroad_set_01.016
+  m_Name: A1_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1719,9 +1719,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 0f0e4e3e2f15f3f48abdab34cb02d95c, type: 3}
+  m_Resource: {fileID: 8300000, guid: 0f0e4e3e2f15f3f48abdab34cb02d95c, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -2423,7 +2423,7 @@ GameObject:
   - component: {fileID: 8815707689755868974}
   - component: {fileID: 510372445346988011}
   m_Layer: 0
-  m_Name: keybroad_set_01.008
+  m_Name: E3_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2544,9 +2544,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 2c75b38fa31221c459a9fe39310b10cc, type: 3}
+  m_Resource: {fileID: 8300000, guid: 2c75b38fa31221c459a9fe39310b10cc, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -2643,7 +2643,7 @@ GameObject:
   - component: {fileID: 205317355234859028}
   - component: {fileID: 9140784210087762709}
   m_Layer: 0
-  m_Name: keybroad_set_01.049
+  m_Name: F#1_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2904,7 +2904,7 @@ GameObject:
   - component: {fileID: 7365924893387216055}
   - component: {fileID: 3747534373253205997}
   m_Layer: 0
-  m_Name: keybroad_set_01.007
+  m_Name: D3_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3025,9 +3025,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 4b30afc127fcd5e4a913ad678153dc9d, type: 3}
+  m_Resource: {fileID: 8300000, guid: 4b30afc127fcd5e4a913ad678153dc9d, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3385,7 +3385,7 @@ GameObject:
   - component: {fileID: 7265376887157922781}
   - component: {fileID: 5663750599213442083}
   m_Layer: 0
-  m_Name: keybroad_set_01.010
+  m_Name: F2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3506,9 +3506,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 791fe4a0071a19e4c94d9226c5ea48e6, type: 3}
+  m_Resource: {fileID: 8300000, guid: 791fe4a0071a19e4c94d9226c5ea48e6, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -4124,7 +4124,7 @@ GameObject:
   - component: {fileID: 4817921608779621158}
   - component: {fileID: 8663732954468363401}
   m_Layer: 0
-  m_Name: keybroad_set_01.017
+  m_Name: H1_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4245,9 +4245,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 68f95cf5737909b469298d52f28c87d4, type: 3}
+  m_Resource: {fileID: 8300000, guid: 68f95cf5737909b469298d52f28c87d4, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -4430,7 +4430,7 @@ GameObject:
   - component: {fileID: 613942374982354191}
   - component: {fileID: 8040392058986862919}
   m_Layer: 0
-  m_Name: keybroad_set_01.097
+  m_Name: C#2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5073,7 +5073,7 @@ GameObject:
   - component: {fileID: 7767190351062060327}
   - component: {fileID: 6375349340239154390}
   m_Layer: 0
-  m_Name: keybroad_set_01.002
+  m_Name: D2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5194,9 +5194,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: da19b79493c575e4583d6bc20544f59e, type: 3}
+  m_Resource: {fileID: 8300000, guid: da19b79493c575e4583d6bc20544f59e, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -6332,7 +6332,7 @@ GameObject:
   - component: {fileID: 5627695813766442943}
   - component: {fileID: 6609292601204264326}
   m_Layer: 0
-  m_Name: keybroad_set_01.012
+  m_Name: A2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6453,9 +6453,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 9cca93ed291746844800bfcc8047bfb8, type: 3}
+  m_Resource: {fileID: 8300000, guid: 9cca93ed291746844800bfcc8047bfb8, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -7047,7 +7047,7 @@ GameObject:
   - component: {fileID: 2787727342994545549}
   - component: {fileID: 8177755062787522315}
   m_Layer: 0
-  m_Name: keybroad_set_01.013
+  m_Name: H2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7168,9 +7168,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 0159f37599aa6db41ae403e5da252d95, type: 3}
+  m_Resource: {fileID: 8300000, guid: 0159f37599aa6db41ae403e5da252d95, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -7907,7 +7907,7 @@ GameObject:
   - component: {fileID: 5143781718112124961}
   - component: {fileID: 501311223675120106}
   m_Layer: 0
-  m_Name: keybroad_set_01.095
+  m_Name: A#2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8918,7 +8918,7 @@ GameObject:
   - component: {fileID: 4457507806202747227}
   - component: {fileID: 7055940448188341976}
   m_Layer: 0
-  m_Name: keybroad_set_01.006
+  m_Name: C3_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9039,9 +9039,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 03b52e65f7f629e4b89fd489e97f171e, type: 3}
+  m_Resource: {fileID: 8300000, guid: 03b52e65f7f629e4b89fd489e97f171e, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -9138,7 +9138,7 @@ GameObject:
   - component: {fileID: 1516824670026494100}
   - component: {fileID: 1182937840929864398}
   m_Layer: 0
-  m_Name: keybroad_set_01.101
+  m_Name: C#3_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9227,7 +9227,7 @@ GameObject:
   - component: {fileID: 490691306782698609}
   - component: {fileID: 6518158372459010480}
   m_Layer: 0
-  m_Name: keybroad_set_01.011
+  m_Name: G2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9348,9 +9348,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: cd2ca690698df2b4286f57ee32756585, type: 3}
+  m_Resource: {fileID: 8300000, guid: cd2ca690698df2b4286f57ee32756585, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -9533,7 +9533,7 @@ GameObject:
   - component: {fileID: 6413714876082467342}
   - component: {fileID: 4045328626546438514}
   m_Layer: 0
-  m_Name: keybroad_set_01.098
+  m_Name: F#2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9619,7 +9619,7 @@ GameObject:
   - component: {fileID: 2825115402446619527}
   - component: {fileID: 8852057060524399791}
   m_Layer: 0
-  m_Name: keybroad_set_01.104
+  m_Name: D#3_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10745,7 +10745,7 @@ GameObject:
   - component: {fileID: 8299271460872388821}
   - component: {fileID: 3855567572881801643}
   m_Layer: 0
-  m_Name: keybroad_set_01.047
+  m_Name: G#1_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12914,7 +12914,7 @@ GameObject:
   - component: {fileID: 4044802858078282011}
   - component: {fileID: 2508797850911364840}
   m_Layer: 0
-  m_Name: keybroad_set_01.046
+  m_Name: E2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13034,9 +13034,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: d17a22f83de380646b43d0bc40f3478a, type: 3}
+  m_Resource: {fileID: 8300000, guid: d17a22f83de380646b43d0bc40f3478a, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -13799,7 +13799,7 @@ GameObject:
   - component: {fileID: 3475549101968209495}
   - component: {fileID: 8760276019793260659}
   m_Layer: 0
-  m_Name: keybroad_set_01.091
+  m_Name: G#2_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14490,7 +14490,7 @@ GameObject:
   - component: {fileID: 2280661644877678030}
   - component: {fileID: 6396362720327424315}
   m_Layer: 0
-  m_Name: keybroad_set_01.014
+  m_Name: E1_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14611,9 +14611,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: ad44020db2f4cad439193de9d52bea99, type: 3}
+  m_Resource: {fileID: 8300000, guid: ad44020db2f4cad439193de9d52bea99, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -15465,7 +15465,7 @@ GameObject:
   - component: {fileID: 556040118061845649}
   - component: {fileID: 2586188261208033373}
   m_Layer: 0
-  m_Name: keybroad_set_01.063
+  m_Name: F3_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15586,9 +15586,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 97aae1e14b5657448b466f7e41f600d4, type: 3}
+  m_Resource: {fileID: 8300000, guid: 97aae1e14b5657448b466f7e41f600d4, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -17475,7 +17475,7 @@ GameObject:
   - component: {fileID: 6834323681012390815}
   - component: {fileID: 8790514101371106807}
   m_Layer: 0
-  m_Name: keybroad_set_01.048
+  m_Name: A#1_Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

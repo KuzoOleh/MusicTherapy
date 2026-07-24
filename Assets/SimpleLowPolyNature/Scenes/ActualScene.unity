@@ -311,7 +311,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: bc78e77177d977942b93e895d26fdc70, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: bc78e77177d977942b93e895d26fdc70, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -3712,7 +3712,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: db12e4ce403ebdf48acd1df6885858ae, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: db12e4ce403ebdf48acd1df6885858ae, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -4900,9 +4900,13 @@ PrefabInstance:
       value: -86.61973
       objectReference: {fileID: 0}
     - target: {fileID: 4943237498466414666, guid: 76e36701b686f57429741ace0285b6bf, type: 3}
+      propertyPath: gripAction
+      value: 
+      objectReference: {fileID: 5667446173830999989, guid: 0be0028c24f2a4c14a96b6aa39055933, type: 3}
+    - target: {fileID: 4943237498466414666, guid: 76e36701b686f57429741ace0285b6bf, type: 3}
       propertyPath: pokeAction
       value: 
-      objectReference: {fileID: 8429157816736509786, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+      objectReference: {fileID: -5976510165261225158, guid: b72ab2a46d9094be38774d023beb4d34, type: 3}
     - target: {fileID: 5187818074926323940, guid: 76e36701b686f57429741ace0285b6bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 11.970028
@@ -5039,6 +5043,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -77.75837
       objectReference: {fileID: 0}
+    - target: {fileID: 8153468702854312590, guid: 76e36701b686f57429741ace0285b6bf, type: 3}
+      propertyPath: gripAction
+      value: 
+      objectReference: {fileID: 5667446173830999989, guid: 0be0028c24f2a4c14a96b6aa39055933, type: 3}
     - target: {fileID: 8153468702854312590, guid: 76e36701b686f57429741ace0285b6bf, type: 3}
       propertyPath: pokeAction
       value: 
@@ -6474,7 +6482,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 44e238b3bd5a10f439fe7c8830117583, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 44e238b3bd5a10f439fe7c8830117583, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -8248,7 +8256,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e065e5c138182b5458bd45b628e428fc, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: e065e5c138182b5458bd45b628e428fc, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.017
@@ -8674,7 +8682,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b5c00b8737d82534ab3a6a1efa7cf729, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: b5c00b8737d82534ab3a6a1efa7cf729, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -9316,7 +9324,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e8b88da0a3ee23c4ea0af43a383f2237, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: e8b88da0a3ee23c4ea0af43a383f2237, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -11049,7 +11057,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d3c08dd5c95e42a469a91f3da5c7b66f, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: d3c08dd5c95e42a469a91f3da5c7b66f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -11181,7 +11189,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a20359baf31acd94cb6027c042943665, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: a20359baf31acd94cb6027c042943665, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -15847,7 +15855,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5e3420bbc6b54534fa392589a767870c, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 5e3420bbc6b54534fa392589a767870c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -16419,7 +16427,7 @@ PrefabInstance:
     - target: {fileID: 352921705661066744, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 0159f37599aa6db41ae403e5da252d95, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 352921705661066744, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16475,7 +16483,7 @@ PrefabInstance:
     - target: {fileID: 982681598955060858, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 68f95cf5737909b469298d52f28c87d4, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 982681598955060858, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16519,7 +16527,7 @@ PrefabInstance:
     - target: {fileID: 1473610534136466475, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 03b52e65f7f629e4b89fd489e97f171e, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 1473610534136466475, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16627,7 +16635,7 @@ PrefabInstance:
     - target: {fileID: 3268661754724551624, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: fe2f383bc10f982459605edc955abaa0, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 3268661754724551624, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16643,7 +16651,7 @@ PrefabInstance:
     - target: {fileID: 3305966479954943525, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: da19b79493c575e4583d6bc20544f59e, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 3305966479954943525, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16659,7 +16667,7 @@ PrefabInstance:
     - target: {fileID: 3323656625487355765, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 9cca93ed291746844800bfcc8047bfb8, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 3323656625487355765, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16675,7 +16683,7 @@ PrefabInstance:
     - target: {fileID: 3453638643338545987, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: cd2ca690698df2b4286f57ee32756585, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 3453638643338545987, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16759,7 +16767,7 @@ PrefabInstance:
     - target: {fileID: 4251753897156949712, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 791fe4a0071a19e4c94d9226c5ea48e6, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4251753897156949712, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16791,7 +16799,7 @@ PrefabInstance:
     - target: {fileID: 4667035698090549470, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: a05d7933e215ea046a7b8d3bcc7e5a6e, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4726816040820612382, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_Volume
       value: 0.4
@@ -16803,7 +16811,7 @@ PrefabInstance:
     - target: {fileID: 4726816040820612382, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 4b30afc127fcd5e4a913ad678153dc9d, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4726816040820612382, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16859,7 +16867,7 @@ PrefabInstance:
     - target: {fileID: 5453520455307076654, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 0f0e4e3e2f15f3f48abdab34cb02d95c, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 5453520455307076654, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16919,7 +16927,7 @@ PrefabInstance:
     - target: {fileID: 6231592138048461486, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 97aae1e14b5657448b466f7e41f600d4, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6231592138048461486, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16931,7 +16939,7 @@ PrefabInstance:
     - target: {fileID: 6270823395736062276, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: c956b1109b4537d44a40ee4be6bb6dd3, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6289812167407174683, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_Volume
       value: 0.4
@@ -16943,7 +16951,7 @@ PrefabInstance:
     - target: {fileID: 6289812167407174683, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: d17a22f83de380646b43d0bc40f3478a, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6289812167407174683, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -17067,7 +17075,7 @@ PrefabInstance:
     - target: {fileID: 7833432695380095398, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 17fd753523444194a87a6f3e89da68ec, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 7833432695380095398, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -17095,7 +17103,7 @@ PrefabInstance:
     - target: {fileID: 7987517417496863875, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: fa9656abbe2ddb448a029a807184ae62, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 7987517417496863875, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -17127,7 +17135,7 @@ PrefabInstance:
     - target: {fileID: 8254492861570231576, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 2c75b38fa31221c459a9fe39310b10cc, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8254492861570231576, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -17155,7 +17163,7 @@ PrefabInstance:
     - target: {fileID: 8394027799120777203, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: fe2f383bc10f982459605edc955abaa0, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8394027799120777203, guid: 4a11702469d265141bcb7e7dd7a23407, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -17744,7 +17752,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b2b65b005f69cdb49ba012840344234f, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: b2b65b005f69cdb49ba012840344234f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -18069,7 +18077,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a85772be8fb46a64bab9c330e1db4b97, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: a85772be8fb46a64bab9c330e1db4b97, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
@@ -19030,7 +19038,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: ec9fb819f5a6f3048a59d7b4852c1ec2, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: ec9fb819f5a6f3048a59d7b4852c1ec2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -19926,7 +19934,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 361715c24a7edb342a181d41364ac215, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 361715c24a7edb342a181d41364ac215, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1

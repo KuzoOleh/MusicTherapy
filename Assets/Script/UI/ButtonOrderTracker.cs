@@ -89,7 +89,7 @@ public class ButtonOrderTracker : MonoBehaviour
 
         if (isSecondTest)
         {
-            Debug.Log("Second test completed. Saving and quitting...");
+            Debug.Log("Second test completed. Saving and marking session ready for export...");
 
             if (gameManager != null)
             {
@@ -97,13 +97,12 @@ public class ButtonOrderTracker : MonoBehaviour
 
                 var method = typeof(GameManager).GetMethod("SaveStatsToCSV", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 method?.Invoke(gameManager, null);
+
+                gameManager.MarkSecondTestComplete();
             }
 
-            Application.Quit();
-
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#endif
+            // The app now stays alive so VRAppServer can serve the CSV to the
+            // therapist app over HTTP; VRAppServer quits the app once that's done.
         }
         else
         {

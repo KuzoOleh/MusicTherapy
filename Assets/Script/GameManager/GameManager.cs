@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     private string therapistName;
     private string sessionId;
 
+    public bool IsSecondTestComplete { get; private set; }
+    public string LastCsvExportPath { get; private set; }
+
     void Awake()
     {
         Debug.Log("Persistent Data Path: " + Application.persistentDataPath);
@@ -129,7 +132,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        LastCsvExportPath = filePath;
+
         Debug.Log("Stats, First, and Second Lüscher Test data saved to CSV.");
+    }
+
+    public void MarkSecondTestComplete()
+    {
+        IsSecondTestComplete = true;
     }
 
     public void SaveButtonPressOrderToCSV()

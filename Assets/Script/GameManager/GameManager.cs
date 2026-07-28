@@ -9,13 +9,23 @@ public class InstrumentStats
     public List<float> appliedForces = new List<float>();
 }
 
+[System.Serializable]
+public class SequencerHitRecord
+{
+    public string groupName;
+    public string buttonLabel;
+    public string moodTag;
+    public string timestamp;
+}
+
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private float timeRelapsed = 0f;
 
     private Dictionary<string, InstrumentStats> instrumentPlayCount = new Dictionary<string, InstrumentStats>();
-    private List<string> buttonPressOrder = new List<string>();               
-    private List<string> secondTestButtonPressOrder = new List<string>();    
+    private List<string> buttonPressOrder = new List<string>();
+    private List<string> secondTestButtonPressOrder = new List<string>();
+    private List<SequencerHitRecord> sequencerHits = new List<SequencerHitRecord>();
 
     private string patientName;
     private string therapistName;
@@ -33,7 +43,7 @@ public class GameManager : MonoBehaviour
 
     // Builds a per-session, filesystem-safe file name so a new session never
     // overwrites a previous patient's exported data.
-    private string GetSessionFileName(string baseName)
+    private string GetSessionFileName(string baseName, string extension = "csv")
     {
         string safePatientName = string.IsNullOrWhiteSpace(patientName) ? "unknown" : patientName;
         foreach (char invalidChar in Path.GetInvalidFileNameChars())
@@ -41,7 +51,15 @@ public class GameManager : MonoBehaviour
             safePatientName = safePatientName.Replace(invalidChar, '_');
         }
 
-        return $"{baseName}_{safePatientName}_{sessionId}.csv";
+        return $"{baseName}_{safePatientName}_{sessionId}.{extension}";
+    }
+
+    // Public convenience wrapper returning a full path under persistentDataPath,
+    // for callers outside GameManager (e.g. the sequencer's WAV recorder) that
+    // want the same per-session naming without duplicating the sanitize logic.
+    public string GetSessionFilePath(string baseName, string extension)
+    {
+        return Path.Combine(Application.persistentDataPath, GetSessionFileName(baseName, extension));
     }
 
     void Update()
@@ -130,6 +148,14 @@ public class GameManager : MonoBehaviour
             {
                 writer.WriteLine($"{i + 1}, {secondTestButtonPressOrder[i]}");
             }
+            writer.WriteLine();
+
+            writer.WriteLine("Секвенсор (натискання кнопок):");
+            writer.WriteLine("Група, Кнопка, Настрій, Час");
+            foreach (var hit in sequencerHits)
+            {
+                writer.WriteLine($"{hit.groupName}, {hit.buttonLabel}, {hit.moodTag}, {hit.timestamp}");
+            }
         }
 
         LastCsvExportPath = filePath;
@@ -140,6 +166,19 @@ public class GameManager : MonoBehaviour
     public void MarkSecondTestComplete()
     {
         IsSecondTestComplete = true;
+    }
+
+    public void HitSequencerButton(string groupName, string buttonLabel, string moodTag)
+    {
+        sequencerHits.Add(new SequencerHitRecord
+        {
+            groupName = groupName,
+            buttonLabel = buttonLabel,
+            moodTag = moodTag,
+            timestamp = System.DateTime.Now.ToString("HH:mm:ss.fff")
+        });
+
+        Debug.Log($"[Секвенсор] {groupName}/{buttonLabel} (настрій: {moodTag})");
     }
 
     public void SaveButtonPressOrderToCSV()

@@ -23,11 +23,6 @@ MonoBehaviour:
     moodTag: groovy
     clip: {fileID: 8300000, guid: 0dc09276204c93b4fba1e671b0547459, type: 3}
     volume: 0.5
-  - displayLabel: Chords
-    groupName: Piano
-    moodTag: groovy
-    clip: {fileID: 8300000, guid: 0dc09276204c93b4fba1e671b0547459, type: 3}
-    volume: 0.5
   - displayLabel: Kick
     groupName: Drum
     moodTag: groovy
@@ -47,4 +42,14 @@ MonoBehaviour:
     groupName: Drum
     moodTag: groovy
     clip: {fileID: 8300000, guid: d28524a38423c0e47ab1b8867cae86df, type: 3}
+    volume: 0.5
+  - displayLabel: Clap2
+    groupName: Drum
+    moodTag: groovy
+    clip: {fileID: 8300000, guid: b707cd5f3d351d84cb6761a9fc1719bb, type: 3}
+    volume: 0.5
+  - displayLabel: Clap
+    groupName: Drum
+    moodTag: groovy
+    clip: {fileID: 8300000, guid: dba53f444f798ea4484bc0f1bf94aeeb, type: 3}
     volume: 0.5

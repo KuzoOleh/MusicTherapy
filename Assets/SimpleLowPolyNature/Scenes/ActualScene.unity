@@ -8273,13 +8273,13 @@ MonoBehaviour:
   recordController: {fileID: 0}
   headerFont: {fileID: 0}
   maxColumns: 4
-  buttonSpacing: 0.2
-  rowSpacing: 0.2
+  buttonSpacing: 0.4
+  rowSpacing: 0.37
   groupGap: 0.18
-  headerHeight: 0.13
+  headerHeight: 0.4
   headerScale: 0.02
   recordButtonRoot: {fileID: 900000011}
-  recordButtonGap: 0.1
+  recordButtonGap: 0.26
 --- !u!1 &900000010
 GameObject:
   m_ObjectHideFlags: 0
@@ -8684,13 +8684,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900000900}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21, y: 0.17, z: 10}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -18.204, y: 1.486, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1001 &908594540
 PrefabInstance:
   m_ObjectHideFlags: 0

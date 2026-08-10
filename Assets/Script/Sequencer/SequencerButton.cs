@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -24,6 +25,7 @@ public class SequencerButton : MonoBehaviour
     [SerializeField] private float ringInnerRadius = 0.018f;
     [SerializeField] private float ringSegmentGapDegrees = 6f;
     [SerializeField] private float ringVerticalOffset = 0.06f;
+    [SerializeField] private float ringForwardOffset = -0.05f;
     [SerializeField] private int ringArcResolution = 8;
     [SerializeField] private Color ringEmptyColor = new Color(0.12f, 0.12f, 0.12f, 1f);
     [SerializeField] private Color ringFilledColor = new Color(0.2f, 0.9f, 0.5f, 1f);
@@ -54,6 +56,8 @@ public class SequencerButton : MonoBehaviour
             interactable = GetComponent<XRBaseInteractable>();
         }
         interactable.selectEntered.AddListener(_ => OnPressed());
+        interactable.hoverEntered.AddListener(_ => OnHoverEntered());
+        interactable.hoverExited.AddListener(_ => OnHoverExited());
 
         if (audioSource == null)
         {
@@ -93,8 +97,26 @@ public class SequencerButton : MonoBehaviour
         return Color.HSVToRGB(hue, 0.55f, 0.9f);
     }
 
+    private void OnHoverEntered()
+    {
+        if (buttonRenderer != null)
+        {
+            buttonRenderer.material.color = Color.Lerp(ColorForGroup(definition.groupName), Color.white, 0.4f);
+        }
+    }
+
+    private void OnHoverExited()
+    {
+        if (buttonRenderer != null)
+        {
+            buttonRenderer.material.color = ColorForGroup(definition.groupName);
+        }
+    }
+
     private void OnPressed()
     {
+        Debug.Log($"[SequencerButton] Pressed: {definition.groupName}/{definition.displayLabel}", this);
+
         // XRI's poke filter re-evaluates hover/depth requirements every frame based on
         // fingertip velocity direction; a slightly hesitant real-world poke can flicker
         // across that boundary for a frame or two, firing selectEntered more than once
@@ -107,11 +129,21 @@ public class SequencerButton : MonoBehaviour
 
         if (isPlaying)
         {
-            // Don't cut the audio off — let the current loop cycle ring out to its
-            // last beat, then stop naturally. Pressing again while it's winding
-            // down cancels the pending stop and resumes looping indefinitely.
+            // Don't cut the audio off immediately — quantize the stop to the next beat
+            // boundary (not the end of the whole clip, which is what merely clearing
+            // audioSource.loop would wait for). Pressing again while it's winding down
+            // cancels the pending stop and resumes looping indefinitely.
             isStopping = !isStopping;
-            audioSource.loop = !isStopping;
+            if (isStopping)
+            {
+                audioSource.SetScheduledEndTime(GetNextBeatDspTime());
+            }
+            else
+            {
+                // No API to "unschedule" an end time — push it far enough out that it
+                // never actually arrives, which is equivalent to canceling the stop.
+                audioSource.SetScheduledEndTime(AudioSettings.dspTime + 1e9);
+            }
             return;
         }
 
@@ -130,6 +162,21 @@ public class SequencerButton : MonoBehaviour
         }
     }
 
+    // Finds the next beat boundary (relative to this loop's own start time, not the shared
+    // clock's bar anchor) that's still safely in the future for SetScheduledEndTime to land on.
+    private double GetNextBeatDspTime()
+    {
+        double now = AudioSettings.dspTime;
+        double beat = clock.BeatDuration;
+        double elapsedSinceStart = now - loopStartDspTime;
+        double nextBeatDspTime = loopStartDspTime + Math.Ceiling(elapsedSinceStart / beat) * beat;
+        if (nextBeatDspTime <= now)
+        {
+            nextBeatDspTime += beat;
+        }
+        return nextBeatDspTime;
+    }
+
     private void Update()
     {
         if (isPlaying)
@@ -145,9 +192,8 @@ public class SequencerButton : MonoBehaviour
         // audioSource.isPlaying once we're actually past the moment it was told to start.
         bool hasReachedScheduledStart = AudioSettings.dspTime >= loopStartDspTime;
 
-        // audioSource.loop was cleared on request, so it stops itself right after
-        // finishing the cycle that was already playing — this just notices that and
-        // reconciles our own state (and the shared clock) once it actually happens.
+        // The scheduled end time set on request forces a hard stop once it arrives — this
+        // just notices that and reconciles our own state (and the shared clock) once it does.
         if (isStopping && isPlaying && hasReachedScheduledStart && !audioSource.isPlaying)
         {
             isStopping = false;
@@ -166,7 +212,10 @@ public class SequencerButton : MonoBehaviour
 
         progressBarRoot = new GameObject("ProgressBar");
         progressBarRoot.transform.SetParent(transform, false);
-        progressBarRoot.transform.localPosition = new Vector3(0f, ringVerticalOffset, 0f);
+        // ringForwardOffset pushes the ring out along the button's front-facing axis so it
+        // renders clearly in front of the button's own surface instead of flush with (or
+        // clipping into) it.
+        progressBarRoot.transform.localPosition = new Vector3(0f, ringVerticalOffset, ringForwardOffset);
         progressBarRoot.transform.localRotation = Quaternion.identity;
 
         float sweepPerSegment = 360f / segments;

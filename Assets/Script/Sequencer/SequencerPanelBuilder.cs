@@ -117,7 +117,11 @@ public class SequencerPanelBuilder : MonoBehaviour
 
     // Anchors the Record button directly beneath the lowest row of the panel it was
     // just built next to, centered on the panel — instead of leaving it wherever it
-    // was last hand-placed, which is what let it drift away from the panel.
+    // was last hand-placed, which is what let it drift away from the panel. Parented
+    // directly under physicalButtonsRoot (unlike the individual sequencer buttons) so
+    // it stays bound to wherever that anchor is moved, since it's a single object and
+    // physicalButtonsRoot is a plain, unscaled transform — no risk of the distortion
+    // that motivated keeping the many spawned buttons independent of it.
     private void PositionRecordButton(int maxRows)
     {
         if (recordButtonRoot == null)
@@ -127,10 +131,9 @@ public class SequencerPanelBuilder : MonoBehaviour
 
         float bottomRowY = -(maxRows - 1) * rowSpacing;
         float y = bottomRowY - recordButtonGap;
-        recordButtonRoot.SetParent(transform, true);
-        recordButtonRoot.SetPositionAndRotation(
-            physicalButtonsRoot.TransformPoint(new Vector3(0f, y, 0f)),
-            physicalButtonsRoot.rotation);
+        recordButtonRoot.SetParent(physicalButtonsRoot, false);
+        recordButtonRoot.localPosition = new Vector3(0f, y, 0f);
+        recordButtonRoot.localRotation = Quaternion.identity;
     }
 
     private void BuildHeader(string groupName, float centerX)

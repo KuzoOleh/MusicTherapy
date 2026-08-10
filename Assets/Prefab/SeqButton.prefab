@@ -126,9 +126,9 @@ MonoBehaviour:
   m_PokeConfiguration:
     m_UseConstant: 1
     m_ConstantValue:
-      m_PokeDirection: 5
+      m_PokeDirection: 6
       m_InteractionDepthOffset: 0
-      m_EnablePokeAngleThreshold: 1
+      m_EnablePokeAngleThreshold: 0
       m_PokeAngleThreshold: 45
     m_Variable: {fileID: 0}
 --- !u!114 &200000005
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_ReturnToInitialPosition: 1
   m_ApplyIfChildIsTarget: 1
   m_ClampToMaxDistance: 1
-  m_MaxDistance: 0.015
+  m_MaxDistance: 0.01
   m_PokeFilter: {fileID: 200000004}
 --- !u!114 &200000006
 MonoBehaviour:
@@ -166,10 +166,11 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   debounceSeconds: 0.3
-  ringOuterRadius: 0.22
-  ringInnerRadius: 0.14
+  ringOuterRadius: 0.132
+  ringInnerRadius: 0.084
   ringSegmentGapDegrees: 6
   ringVerticalOffset: 0
+  ringForwardOffset: -0.03
   ringArcResolution: 8
   ringEmptyColor: {r: 0.12, g: 0.12, b: 0.12, a: 1}
   ringFilledColor: {r: 0.2, g: 0.9, b: 0.5, a: 1}
@@ -200,8 +201,8 @@ Transform:
   m_GameObject: {fileID: 200000010}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -0.03807713}
-  m_LocalScale: {x: 0.07615426, y: 0.4913473, z: 0.530595}
+  m_LocalPosition: {x: 0, y: 0, z: -0.02284628}
+  m_LocalScale: {x: 0.04569256, y: 0.29480838, z: 0.318357}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 200000002}
@@ -270,7 +271,7 @@ GameObject:
   - component: {fileID: 200000021}
   - component: {fileID: 200000022}
   m_Layer: 0
-  m_Name: PokeCollider
+  m_Name: InteractionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,8 +286,8 @@ Transform:
   m_GameObject: {fileID: 200000020}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.02}
-  m_LocalScale: {x: 0.4, y: 0.15, z: 0.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.318, y: 0.294, z: 0.018}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 200000002}

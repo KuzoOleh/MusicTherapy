@@ -3,14 +3,15 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-// Reads a SequencerBankSO and builds the grouped panel at runtime. Both the
-// physical (3D, poke-able) buttons and their group header labels are children
-// of the same physicalButtonsRoot transform, in the same real-world-meters
-// coordinate space — this keeps them together instead of drifting apart the
-// way a separate Canvas (different scale/origin) would. Each group's buttons
-// sit in a flat box grid (wrapping after maxColumns, so up to maxColumns x N
-// rows per group), all facing the same direction as physicalButtonsRoot, and
-// groups sit as side-by-side blocks next to each other.
+// Reads a SequencerBankSO and builds the grouped panel at runtime. physicalButtonsRoot
+// is used only as a one-time world-space reference point/orientation for layout math —
+// the physical (3D, poke-able) buttons and their group header labels are spawned as
+// independent objects (parented under this builder, not physicalButtonsRoot) with their
+// world position/rotation computed via physicalButtonsRoot.TransformPoint/.rotation, so
+// they can't be distorted by whatever scale physicalButtonsRoot's own transform has. Each
+// group's buttons sit in a flat box grid (wrapping after maxColumns, so up to maxColumns x
+// N rows per group), all facing the same direction as physicalButtonsRoot, and groups sit
+// as side-by-side blocks next to each other.
 public class SequencerPanelBuilder : MonoBehaviour
 {
     [SerializeField] private SequencerBankSO bank;
@@ -27,8 +28,8 @@ public class SequencerPanelBuilder : MonoBehaviour
     [SerializeField] private float headerScale = 0.02f;
 
     // Positioned (not built) — this is the existing Record button, kept as a Canvas
-    // control but re-anchored under physicalButtonsRoot so it moves and scales with
-    // the panel instead of living wherever it was last hand-placed in the scene.
+    // control but repositioned to sit relative to physicalButtonsRoot instead of
+    // living wherever it was last hand-placed in the scene.
     [SerializeField] private Transform recordButtonRoot;
     [SerializeField] private float recordButtonGap = 0.1f;
 
@@ -101,12 +102,15 @@ public class SequencerPanelBuilder : MonoBehaviour
             int col = i % columns;
             int row = i / columns;
 
-            var buttonInstance = Instantiate(buttonPrefab, physicalButtonsRoot);
-            buttonInstance.transform.localPosition = new Vector3(startX + col * buttonSpacing, -row * rowSpacing, 0f);
-            // Identity local rotation — buttons inherit physicalButtonsRoot's own
-            // rotation, which is what's already aimed at the player, so every
-            // button in the grid faces the same way, flat, with no per-button tilt.
-            buttonInstance.transform.localRotation = Quaternion.identity;
+            // Buttons are spawned as independent world-space objects (parented under this
+            // builder, not physicalButtonsRoot) so their position/scale can't be distorted
+            // by whatever scale or rotation physicalButtonsRoot's own transform happens to
+            // have — physicalButtonsRoot is used purely as a one-time reference point/orientation.
+            var buttonInstance = Instantiate(buttonPrefab, transform);
+            var localOffset = new Vector3(startX + col * buttonSpacing, -row * rowSpacing, 0f);
+            buttonInstance.transform.SetPositionAndRotation(
+                physicalButtonsRoot.TransformPoint(localOffset),
+                physicalButtonsRoot.rotation);
             buttonInstance.Initialize(definitions[i], clock, recordController);
         }
     }
@@ -123,17 +127,19 @@ public class SequencerPanelBuilder : MonoBehaviour
 
         float bottomRowY = -(maxRows - 1) * rowSpacing;
         float y = bottomRowY - recordButtonGap;
-        recordButtonRoot.SetParent(physicalButtonsRoot, false);
-        recordButtonRoot.localPosition = new Vector3(0f, y, 0f);
-        recordButtonRoot.localRotation = Quaternion.identity;
+        recordButtonRoot.SetParent(transform, true);
+        recordButtonRoot.SetPositionAndRotation(
+            physicalButtonsRoot.TransformPoint(new Vector3(0f, y, 0f)),
+            physicalButtonsRoot.rotation);
     }
 
     private void BuildHeader(string groupName, float centerX)
     {
         var headerGO = new GameObject($"Header - {groupName}");
-        headerGO.transform.SetParent(physicalButtonsRoot, false);
-        headerGO.transform.localPosition = new Vector3(centerX, headerHeight, 0f);
-        headerGO.transform.localRotation = Quaternion.identity;
+        headerGO.transform.SetParent(transform, false);
+        headerGO.transform.SetPositionAndRotation(
+            physicalButtonsRoot.TransformPoint(new Vector3(centerX, headerHeight, 0f)),
+            physicalButtonsRoot.rotation);
         headerGO.transform.localScale = new Vector3(headerScale, headerScale, headerScale);
 
         var headerText = headerGO.AddComponent<TextMeshPro>();

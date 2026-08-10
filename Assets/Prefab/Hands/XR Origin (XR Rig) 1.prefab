@@ -393,29 +393,45 @@ MonoBehaviour:
   m_EnableTurnAround: 1
   m_DelayTime: 0
   m_LeftHandTurnInput:
-    m_InputSourceMode: 2
+    m_InputSourceMode: 1
     m_InputAction:
       m_Name: Left Hand Snap Turn
       m_Type: 0
       m_ExpectedControlType: Vector2
       m_Id: 536e141d-ee23-4272-b0fd-3984d1655f02
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
+      m_Processors:
+      m_Interactions:
+      m_SingletonActionBindings:
+      - m_Name:
+        m_Id: 2f6a5f2e-6d0a-4b9a-9f5b-5c9a2f6a5f2e
+        m_Path: <XRController>{LeftHand}/{Primary2DAxis}
+        m_Interactions: Sector(directions=12,sweepBehavior=1),Sector(directions=2,sweepBehavior=2)
+        m_Processors:
+        m_Groups:
+        m_Action: Left Hand Snap Turn
+        m_Flags: 0
       m_Flags: 0
     m_InputActionReference: {fileID: 0}
     m_ObjectReferenceObject: {fileID: 0}
     m_ManualValue: {x: 0, y: 0}
   m_RightHandTurnInput:
-    m_InputSourceMode: 2
+    m_InputSourceMode: 1
     m_InputAction:
       m_Name: Right Hand Snap Turn
       m_Type: 0
       m_ExpectedControlType: Vector2
       m_Id: b17ca378-4740-48c7-abe1-7f35bce317e9
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
+      m_Processors:
+      m_Interactions:
+      m_SingletonActionBindings:
+      - m_Name:
+        m_Id: 7b3c1e9d-4a2f-4c8e-9b1a-8d3c1e9d4a2f
+        m_Path: <XRController>{RightHand}/{Primary2DAxis}
+        m_Interactions: Sector(directions=12,sweepBehavior=1),Sector(directions=2,sweepBehavior=2)
+        m_Processors:
+        m_Groups:
+        m_Action: Right Hand Snap Turn
+        m_Flags: 0
       m_Flags: 0
     m_InputActionReference: {fileID: 0}
     m_ObjectReferenceObject: {fileID: 0}
@@ -707,7 +723,7 @@ MonoBehaviour:
   m_Camera: {fileID: 3106545117225882475}
   m_OriginBaseGameObject: {fileID: 2818114520128250174}
   m_CameraFloorOffsetObject: {fileID: 1217820116728864874}
-  m_RequestedTrackingOriginMode: 0
+  m_RequestedTrackingOriginMode: 2
   m_CameraYOffset: 1.36144
 --- !u!143 &4172020775941715310
 CharacterController:

@@ -174,6 +174,7 @@ GameObject:
   - component: {fileID: 6529429611255685665}
   - component: {fileID: 8992129188783242455}
   - component: {fileID: 7276585160664856562}
+  - component: {fileID: 7276585160664856564}
   m_Layer: 0
   m_Name: DrumStickRIght
   m_TagString: Untagged
@@ -191,7 +192,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.092, y: 0.4404, z: -0.329}
-  m_LocalScale: {x: 0.028203614, y: 0.028203614, z: 0.028203614}
+  m_LocalScale: {x: 0.032434156, y: 0.032434156, z: 0.032434156}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 727321424621744492}
@@ -379,6 +380,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5f61d7764bcc774ba6ecf1d229f1ae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   speed: 0
+--- !u!114 &7276585160664856564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7150001626335299403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5bc4f974c62142c6ff3e4d8c02744c6, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:

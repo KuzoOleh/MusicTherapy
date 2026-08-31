@@ -14,6 +14,11 @@ public class NoteTrigger : MonoBehaviour
         foreach (GameObject obj in notes)
         {
             ParticleTrigger childTrigger = obj.GetComponent<ParticleTrigger>();
+            if (childTrigger == null)
+            {
+                Debug.LogWarning($"[NoteTrigger] {obj.name} is missing a ParticleTrigger component — skipping.", obj);
+                continue;
+            }
 
             // Check dynamically if the instrument needs sticks
             if (childTrigger.DoesStickNeeded())

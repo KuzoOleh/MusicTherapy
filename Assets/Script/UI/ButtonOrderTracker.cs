@@ -93,16 +93,28 @@ public class ButtonOrderTracker : MonoBehaviour
 
             if (gameManager != null)
             {
-                gameManager.SaveButtonPressOrderToCSV();
-
-                var method = typeof(GameManager).GetMethod("SaveStatsToCSV", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                method?.Invoke(gameManager, null);
-
-                gameManager.MarkSecondTestComplete();
+                // Mark complete even if a save step throws (e.g. disk full, locked file) —
+                // otherwise IsSecondTestComplete never becomes true and the session gets
+                // permanently stuck as "not finished" for VRAppServer's export check. If the
+                // CSV genuinely never got written, that check fails on its own (file missing)
+                // with a clear "not finished yet" instead of an unrecoverable stuck state.
+                try
+                {
+                    gameManager.SaveButtonPressOrderToCSV();
+                    gameManager.SaveStatsToCSV();
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"Failed to save session CSV data: {ex.Message}");
+                }
+                finally
+                {
+                    gameManager.MarkSecondTestComplete();
+                }
             }
 
             // The app now stays alive so VRAppServer can serve the CSV to the
-            // therapist app over HTTP; VRAppServer quits the app once that's done.
+            // therapist app over the socket connection; VRAppServer quits the app once that's done.
         }
         else
         {

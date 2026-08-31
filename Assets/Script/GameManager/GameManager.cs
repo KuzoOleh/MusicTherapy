@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SaveStatsToCSV()
+    public void SaveStatsToCSV()
     {
         string filePath = Path.Combine(Application.persistentDataPath, GetSessionFileName("instrument_data"));
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));

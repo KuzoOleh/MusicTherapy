@@ -23,10 +23,10 @@ public class ParticleTrigger : MonoBehaviour
     public void Update()
     {
         // Update applied force for each stick independently
-        if (leftHandStick != null)
-            leftHandAppliedForce = leftHandStick.GetComponent<MeasureSpeed>().angularVelocity.x;
-        if (rightHandStick != null)
-            rightHandAppliedForce = rightHandStick.GetComponent<MeasureSpeed>().angularVelocity.x;
+        if (leftHandStick != null && leftHandStick.TryGetComponent(out MeasureSpeed leftSpeed))
+            leftHandAppliedForce = leftSpeed.angularVelocity.x;
+        if (rightHandStick != null && rightHandStick.TryGetComponent(out MeasureSpeed rightSpeed))
+            rightHandAppliedForce = rightSpeed.angularVelocity.x;
     }
 
     public bool DoesStickNeeded()
@@ -39,17 +39,20 @@ public class ParticleTrigger : MonoBehaviour
         if (other.CompareTag("Stick"))
         {
             Transform parentStick = other.transform.parent;
-            // Check which stick is involved (left or right) and apply the force accordingly
-             if (parentStick == leftHandStick.transform)
+            // Check which stick is involved (left or right) and apply the force accordingly.
+            // leftHandStick/rightHandStick are only assigned when doesStickNeeded is true, so
+            // an instrument that doesn't need sticks (and never got them wired up) can still
+            // be hit by a "Stick"-tagged collider without either comparison touching a null transform.
+            if (leftHandStick != null && parentStick == leftHandStick.transform)
             {
                 gameManager.HitInstrument(gameObject.name, force);
                 AppliedForce(leftHandAppliedForce);
             }
-            else if (parentStick == rightHandStick.transform)
+            else if (rightHandStick != null && parentStick == rightHandStick.transform)
             {
                 gameManager.HitInstrument(gameObject.name, force);
                 AppliedForce(rightHandAppliedForce);
-            } 
+            }
 
             particleSystem.Play();
             audioSource.Play();

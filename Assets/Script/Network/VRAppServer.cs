@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-// Matches the JSON shape sent by TherapistVision's VRAppClient.SendSessionInfo.
+// Matches the JSON shape sent by TherapistVision's SessionStart message.
 [Serializable]
 public class SessionInfo
 {
@@ -16,20 +16,34 @@ public class SessionInfo
     public string sessionDate;
 }
 
-// Receives session data from the TherapistVision app over a raw TCP socket and serves
-// the session CSV back once the second Lüscher test has completed. Switched from
-// HttpListener to TcpListener: HttpListener's cross-platform support under Unity's
-// Mono/IL2CPP backends is inconsistent (it's the reason the two Linux builds couldn't
-// see each other), while System.Net.Sockets is core BCL functionality Unity supports
-// reliably on every platform/scripting backend.
+// Connects out to the TherapistVision app (which now hosts the TCP server) and handles
+// session data over a raw TCP socket, serving the session CSV back once the second
+// Lüscher test has completed.
+//
+// NOTE on the class name: this class is still called "VRAppServer" (and lives in the same
+// file/asset) even though it is now the TCP *client* side of the connection, purely to avoid
+// re-linking this component in ActualScene.unity's Inspector. See the migration note in
+// TherapistVision's VRAppClient.cs (now the TCP *server*) for the matching half of this swap.
+//
+// Unlike the old one-shot "accept a connection, handle one message, close" server, this side
+// never has anything to say on its own — every message (SessionStart, ExportRequest) is
+// initiated by a therapist clicking a button on the other end, at an unpredictable time. So the
+// connection is held open indefinitely: discover + connect once (retrying until the therapist
+// app is reachable), then sit in a loop reading whatever message arrives next, for as long as
+// the app runs.
+//
+// No IP address is configured anywhere: the headset and the therapist's laptop are only ever
+// on the same WiFi LAN, with no cable between them and no guarantee either device's IP is
+// stable (DHCP, network switches, therapist running Windows one day and Linux the next). So
+// instead of a fixed address, this side broadcasts a small UDP "who's out there" packet on the
+// LAN and connects to whichever machine answers — see DiscoverServer below.
 public class VRAppServer : MonoBehaviour
 {
-    // Wire protocol (VRAppClient on the TherapistVision side must match this exactly):
+    // Wire protocol for the TCP session connection (must match the TherapistVision server
+    // exactly):
     //   [1 byte]  MessageType
     //   [4 bytes] payload length, big-endian int32
     //   [N bytes] payload
-    // One request message in, one response message out, then the connection closes —
-    // mirrors the old one-request-per-connection HTTP behavior.
     private enum MessageType : byte
     {
         SessionStart = 1,
@@ -38,45 +52,46 @@ public class VRAppServer : MonoBehaviour
         ExportResponse = 4,
     }
 
-    [Header("TCP Server")]
-    // 0.0.0.0 (all interfaces) rather than loopback — the server needs to be reachable
-    // from another device on the network (e.g. the therapist's laptop), not just from
-    // a client running on the same machine as the VR app.
-    [SerializeField] private string listenAddress = "0.0.0.0";
-    [SerializeField] private int listenPort = 8080;
+    // --- Discovery protocol (UDP, separate from the TCP session port above) ---
+    // The client broadcasts DiscoveryRequestMagic on DiscoveryPort; the TherapistVision server
+    // listens there and unicasts back "DiscoveryResponsePrefix<tcpPort>" to whoever asked. The
+    // client reads the reply packet's *source IP* to learn the server's address — nobody has to
+    // type an IP in anywhere. Both magic strings and the port must match VRAppClient.cs exactly.
+    private const string DiscoveryRequestMagic = "MUSICTHERAPY_DISCOVERY_REQUEST";
+    private const string DiscoveryResponsePrefix = "MUSICTHERAPY_DISCOVERY_RESPONSE:";
+    private const int DiscoveryPort = 8081;
+    private const int DiscoveryTimeoutMs = 1000;
+
+    private const int ConnectTimeoutMs = 3000;
+    private const int ReconnectDelayMs = 2000;
+    // How long HandleSessionExport waits after writing the CSV response before triggering
+    // Application.Quit(), so the OS has time to actually put the bytes on the wire first.
+    private const int PostExportQuitDelayMs = 2000;
+    // Only bounds how long a Write can block if the peer stops reading; the read side of the
+    // dispatch loop is deliberately left without a timeout below, since it's supposed to block
+    // indefinitely while waiting for the therapist to click a button.
+    private const int SendTimeoutMs = 10000;
 
     private GameManager gameManager;
-    private TcpListener listener;
-    private Thread listenerThread;
+    private Thread connectionThread;
+    private TcpClient activeTcpClient;
     private readonly ConcurrentQueue<Action> mainThreadActions = new ConcurrentQueue<Action>();
     private volatile bool quitRequested;
+    private volatile bool stopRequested;
 
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
         if (gameManager == null)
         {
-            Debug.LogError("[VRAppServer] No GameManager found in scene — server will not be able to write incoming session data.");
+            Debug.LogError("[VRAppServer] No GameManager found in scene — will not be able to write incoming session data.");
         }
     }
 
     private void Start()
     {
-        try
-        {
-            listener = new TcpListener(IPAddress.Parse(listenAddress), listenPort);
-            listener.Start();
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"[VRAppServer] Failed to start listening on {listenAddress}:{listenPort}: {ex.Message}");
-            return;
-        }
-
-        Debug.Log($"[VRAppServer] Listening on {listenAddress}:{listenPort}");
-
-        listenerThread = new Thread(ListenLoop) { IsBackground = true };
-        listenerThread.Start();
+        connectionThread = new Thread(ConnectionLoop) { IsBackground = true };
+        connectionThread.Start();
     }
 
     private void Update()
@@ -104,63 +119,153 @@ public class VRAppServer : MonoBehaviour
         }
     }
 
-    private void ListenLoop()
+    private void ConnectionLoop()
     {
-        while (listener != null)
+        while (!stopRequested)
         {
-            TcpClient client;
-            try
+            IPEndPoint serverEndpoint = ResolveServerEndpoint();
+            if (serverEndpoint == null)
             {
-                client = listener.AcceptTcpClient();
-            }
-            catch (Exception)
-            {
-                break; // listener was stopped
+                if (!stopRequested)
+                    Thread.Sleep(ReconnectDelayMs);
+                continue;
             }
 
+            TcpClient client = null;
             try
             {
-                HandleClient(client);
+                client = ConnectWithTimeout(serverEndpoint.Address.ToString(), serverEndpoint.Port);
+                client.SendTimeout = SendTimeoutMs;
+                activeTcpClient = client;
+
+                Debug.Log($"[VRAppServer] Connected to therapist app at {serverEndpoint}");
+
+                using NetworkStream stream = client.GetStream();
+                while (!stopRequested)
+                {
+                    var type = (MessageType)ReadByte(stream);
+                    byte[] payload = ReadFramedPayload(stream);
+
+                    switch (type)
+                    {
+                        case MessageType.SessionStart:
+                            HandleSessionStart(payload, stream);
+                            break;
+                        case MessageType.ExportRequest:
+                            HandleSessionExport(stream);
+                            break;
+                        default:
+                            WriteMessage(stream, MessageType.Ack, Encoding.UTF8.GetBytes("{\"error\":\"unknown message type\"}"));
+                            break;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[VRAppServer] Error handling connection: {ex.Message}");
+                if (!stopRequested)
+                    Debug.LogWarning($"[VRAppServer] Connection to therapist app lost or unavailable ({ex.Message}) — retrying in {ReconnectDelayMs / 1000f:0.#}s.");
             }
             finally
             {
-                client.Close();
+                try { client?.Close(); } catch { /* ignore */ }
+                activeTcpClient = null;
             }
+
+            if (!stopRequested)
+                Thread.Sleep(ReconnectDelayMs);
         }
     }
 
-    // Without a read/write timeout, a client that connects and then never sends anything
-    // (a dead connection, a port scanner, a network hiccup) would block this single-threaded
-    // accept loop forever on Stream.Read, since AcceptTcpClient/HandleClient run sequentially —
-    // no other client could ever connect until that hang cleared on its own.
-    private const int SocketTimeoutMs = 10000;
-
-    private void HandleClient(TcpClient client)
+    // A text file at <persistentDataPath>/server_ip.txt containing "ip[:port]" bypasses
+    // discovery entirely and forces a direct connection — an escape hatch for troubleshooting
+    // (e.g. a network that blocks broadcast traffic) without needing a new build. Not required
+    // for normal use.
+    private IPEndPoint ResolveServerEndpoint()
     {
-        client.ReceiveTimeout = SocketTimeoutMs;
-        client.SendTimeout = SocketTimeoutMs;
+        IPEndPoint manualOverride = TryReadManualOverride();
+        return manualOverride ?? DiscoverServer();
+    }
 
-        using NetworkStream stream = client.GetStream();
-
-        var type = (MessageType)ReadByte(stream);
-        byte[] payload = ReadFramedPayload(stream);
-
-        switch (type)
+    private IPEndPoint TryReadManualOverride()
+    {
+        try
         {
-            case MessageType.SessionStart:
-                HandleSessionStart(payload, stream);
-                break;
-            case MessageType.ExportRequest:
-                HandleSessionExport(stream);
-                break;
-            default:
-                WriteMessage(stream, MessageType.Ack, Encoding.UTF8.GetBytes("{\"error\":\"unknown message type\"}"));
-                break;
+            string overridePath = Path.Combine(Application.persistentDataPath, "server_ip.txt");
+            if (!File.Exists(overridePath))
+                return null;
+
+            string line = File.ReadAllText(overridePath).Trim();
+            if (string.IsNullOrEmpty(line))
+                return null;
+
+            string[] parts = line.Split(':');
+            if (!IPAddress.TryParse(parts[0].Trim(), out IPAddress address))
+            {
+                Debug.LogWarning($"[VRAppServer] server_ip.txt contains an invalid IP address: '{parts[0]}' — ignoring override.");
+                return null;
+            }
+
+            int port = 8080;
+            if (parts.Length > 1 && int.TryParse(parts[1].Trim(), out int parsedPort))
+                port = parsedPort;
+
+            Debug.Log($"[VRAppServer] Using manual server address override from server_ip.txt: {address}:{port}");
+            return new IPEndPoint(address, port);
         }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"[VRAppServer] Failed to read server_ip.txt override: {ex.Message}");
+            return null;
+        }
+    }
+
+    // Broadcasts a small "who's out there" packet on the LAN and returns whoever answers.
+    // Returns null (rather than throwing) on a timeout/no-answer so the caller can just retry —
+    // that's the expected, common case whenever the therapist app hasn't been started yet.
+    private IPEndPoint DiscoverServer()
+    {
+        try
+        {
+            using var udpClient = new UdpClient();
+            udpClient.EnableBroadcast = true;
+            udpClient.Client.ReceiveTimeout = DiscoveryTimeoutMs;
+
+            byte[] requestBytes = Encoding.UTF8.GetBytes(DiscoveryRequestMagic);
+            udpClient.Send(requestBytes, requestBytes.Length, new IPEndPoint(IPAddress.Broadcast, DiscoveryPort));
+
+            var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            byte[] responseBytes = udpClient.Receive(ref remoteEndPoint);
+            string response = Encoding.UTF8.GetString(responseBytes);
+
+            if (!response.StartsWith(DiscoveryResponsePrefix, StringComparison.Ordinal))
+                return null;
+
+            if (!int.TryParse(response.Substring(DiscoveryResponsePrefix.Length), out int tcpPort))
+                return null;
+
+            Debug.Log($"[VRAppServer] Discovered therapist app at {remoteEndPoint.Address}:{tcpPort}");
+            return new IPEndPoint(remoteEndPoint.Address, tcpPort);
+        }
+        catch (Exception)
+        {
+            // Timeout / no responder yet — normal while waiting for the therapist app to start.
+            return null;
+        }
+    }
+
+    private static TcpClient ConnectWithTimeout(string ipAddress, int port)
+    {
+        var client = new TcpClient();
+        IAsyncResult connectResult = client.BeginConnect(ipAddress, port, null, null);
+        bool connected = connectResult.AsyncWaitHandle.WaitOne(ConnectTimeoutMs);
+        if (!connected)
+        {
+            try { client.EndConnect(connectResult); } catch { /* expected — we're timing out */ }
+            client.Close();
+            throw new SocketException((int)SocketError.TimedOut);
+        }
+        client.EndConnect(connectResult);
+        return client;
     }
 
     private void HandleSessionStart(byte[] payload, NetworkStream stream)
@@ -199,7 +304,7 @@ public class VRAppServer : MonoBehaviour
             }
         });
 
-        if (!doneSignal.Wait(SocketTimeoutMs))
+        if (!doneSignal.Wait(SendTimeoutMs))
         {
             WriteMessage(stream, MessageType.Ack, Encoding.UTF8.GetBytes("{\"error\":\"timed out saving session info\"}"));
             return;
@@ -220,8 +325,8 @@ public class VRAppServer : MonoBehaviour
     {
         // IsSecondTestComplete/LastCsvExportPath are written on the main thread (by
         // ButtonOrderTracker/GameManager) — read them through the same main-thread
-        // hand-off HandleSessionStart uses below, instead of touching them directly
-        // from this listener thread with no synchronization.
+        // hand-off HandleSessionStart uses above, instead of touching them directly
+        // from this connection thread with no synchronization.
         string csvPath = null;
         using var readySignal = new ManualResetEventSlim(false);
         mainThreadActions.Enqueue(() =>
@@ -231,7 +336,7 @@ public class VRAppServer : MonoBehaviour
             readySignal.Set();
         });
 
-        if (!readySignal.Wait(SocketTimeoutMs))
+        if (!readySignal.Wait(SendTimeoutMs))
         {
             WriteExportFailure(stream, "timed out waiting for session state");
             return;
@@ -254,6 +359,13 @@ public class VRAppServer : MonoBehaviour
 
         WriteMessage(stream, MessageType.ExportResponse, payloadStream.ToArray());
 
+        // NetworkStream.Write only guarantees the CSV bytes were handed to the OS send
+        // buffer, not that TherapistVision has actually received them — quitting (which tears
+        // the socket down, see Shutdown) on literally the next frame races that delivery and
+        // can drop the response before it ever reaches the peer, especially over WiFi. Give the
+        // OS a moment to actually flush it first.
+        Thread.Sleep(PostExportQuitDelayMs);
+
         mainThreadActions.Enqueue(() =>
         {
             Debug.Log("[VRAppServer] Second Lüscher test passed — sending CSV back to TherapistVision.");
@@ -270,7 +382,7 @@ public class VRAppServer : MonoBehaviour
         WriteMessage(stream, MessageType.ExportResponse, payload);
     }
 
-    // --- Framing helpers (mirrored on the TherapistVision client) ---
+    // --- Framing helpers (mirrored on the TherapistVision server) ---
 
     private static void WriteMessage(NetworkStream stream, MessageType type, byte[] payload)
     {
@@ -323,24 +435,19 @@ public class VRAppServer : MonoBehaviour
 
     private void OnDestroy()
     {
-        StopListener();
+        Shutdown();
     }
 
     private void OnApplicationQuit()
     {
-        StopListener();
+        Shutdown();
     }
 
-    private void StopListener()
+    private void Shutdown()
     {
-        try
-        {
-            listener?.Stop();
-        }
-        catch
-        {
-            // ignore — already stopped
-        }
-        listener = null;
+        stopRequested = true;
+        // Unblocks a thread parked in a blocking Read/Connect call so ConnectionLoop can exit
+        // promptly instead of waiting out a timeout that no longer matters.
+        try { activeTcpClient?.Close(); } catch { /* ignore — already closed/never opened */ }
     }
 }

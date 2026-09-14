@@ -4873,7 +4873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3005966720970884376, guid: 76e36701b686f57429741ace0285b6bf, type: 3}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3005966720970884376, guid: 76e36701b686f57429741ace0285b6bf, type: 3}
       propertyPath: m_EnableStrafe
@@ -7354,10 +7354,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cde17b6d437348a6a7afa20d9514293d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  listenAddress: 0.0.0.0
-  listenPort: 8080
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1001 &853077563
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15580,7 +15578,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1558909279
 MonoBehaviour:
   m_ObjectHideFlags: 0

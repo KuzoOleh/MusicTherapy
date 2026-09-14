@@ -28,7 +28,6 @@ Shader "LowPoly/SimpleWater"
 	{
 		Tags{ "RenderType" = "Opaque"  "Queue" = "Transparent+0" }
 		Cull Back
-		GrabPass{ }
 		CGPROGRAM
 		#include "UnityStandardUtils.cginc"
 		#include "UnityShaderVariables.cginc"
@@ -53,7 +52,6 @@ Shader "LowPoly/SimpleWater"
 		uniform float _FoamFalloff;
 		uniform sampler2D _Foam;
 		uniform float4 _Foam_ST;
-		uniform sampler2D _GrabTexture;
 		uniform float _Distortion;
 		uniform float _WaterSpecular;
 		uniform float _FoamSpecular;
@@ -85,18 +83,7 @@ Shader "LowPoly/SimpleWater"
 			float2 panner116 = ( uv_Foam + 1.0 * _Time.y * float2( -0.01,0.01 ));
 			float temp_output_114_0 = ( saturate( pow( ( temp_output_89_0 + _FoamDepth ) , _FoamFalloff ) ) * tex2D( _Foam, panner116 ).r );
 			float4 lerpResult117 = lerp( lerpResult13 , float4(1,1,1,0) , temp_output_114_0);
-			float4 ase_screenPos164 = ase_screenPos;
-			#if UNITY_UV_STARTS_AT_TOP
-			float scale164 = -1.0;
-			#else
-			float scale164 = 1.0;
-			#endif
-			float halfPosW164 = ase_screenPos164.w * 0.5;
-			ase_screenPos164.y = ( ase_screenPos164.y - halfPosW164 ) * _ProjectionParams.x* scale164 + halfPosW164;
-			ase_screenPos164.xyzw /= ase_screenPos164.w;
-			float4 screenColor65 = tex2D( _GrabTexture, ( float3( (ase_screenPos164).xy ,  0.0 ) + ( temp_output_24_0 * _Distortion ) ).xy );
-			float4 lerpResult93 = lerp( lerpResult117 , screenColor65 , temp_output_94_0);
-			o.Albedo = lerpResult93.rgb;
+			o.Albedo = lerpResult117.rgb;
 			float lerpResult130 = lerp( _WaterSpecular , _FoamSpecular , temp_output_114_0);
 			float3 temp_cast_3 = (lerpResult130).xxx;
 			o.Specular = temp_cast_3;

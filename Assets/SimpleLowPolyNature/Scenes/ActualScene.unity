@@ -8269,13 +8269,13 @@ MonoBehaviour:
   recordController: {fileID: 0}
   headerFont: {fileID: 0}
   maxColumns: 4
-  buttonSpacing: 0.4
-  rowSpacing: 0.37
-  groupGap: 0.18
-  headerHeight: 0.4
+  buttonSpacing: 0.16
+  rowSpacing: 0.15
+  groupGap: 0.14
+  headerHeight: 0.12
   headerScale: 0.02
   recordButtonRoot: {fileID: 900000011}
-  recordButtonGap: 0.26
+  recordButtonGap: 0.11
 --- !u!1 &900000010
 GameObject:
   m_ObjectHideFlags: 0

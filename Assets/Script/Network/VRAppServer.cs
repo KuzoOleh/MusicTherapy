@@ -286,9 +286,9 @@ public class VRAppServer : MonoBehaviour
             {
                 if (gameManager != null)
                 {
-                    gameManager.SetPatientName(info.patientName);
-                    gameManager.SetTherapistName(info.therapistName);
-                    gameManager.SavePatientAndTherapistInfo();
+                    // Starts a clean session: clears data collected before the therapist
+                    // pressed Start, resets the timer and assigns a new session id.
+                    gameManager.BeginSession(info.patientName, info.therapistName, info.sessionDate);
                     Debug.Log("[VRAppServer] Hey, I got info from TherapistVision — we're good to write in!");
                 }
                 saveSucceeded = true;

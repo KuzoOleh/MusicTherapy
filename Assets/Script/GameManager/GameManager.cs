@@ -27,6 +27,15 @@ public class SequencerHitRecord
     public string groupName;
     public string buttonLabel;
     public string moodTag;
+    public string action;      // start / stop / resume
+    public float sessionTime;
+}
+
+[Serializable]
+public class SequencerRecordingEvent
+{
+    public string eventName;   // armed / started / stopped / cancelled
+    public string fileName;    // WAV file, for "stopped"
     public float sessionTime;
 }
 
@@ -39,7 +48,10 @@ public class SequencerHitRecord
 //   instrument_summary — per instrument: detail = hits / avg_force / max_force
 //   instrument_hit     — every hit: item = instrument, value = normalized force
 //   lusher_1/lusher_2  — Lüscher choices: index = position, item = color
-//   sequencer          — item = button, detail = group, value = mood tag
+//   sequencer          — loop started:        item = button, detail = group, value = mood tag
+//   sequencer_stop     — stop requested (the loop ends on the next beat), same columns
+//   sequencer_resume   — a pending stop was cancelled, same columns
+//   sequencer_record   — Record button: item = armed/started/stopped/cancelled, value = WAV file
 public class GameManager : MonoBehaviour
 {
     private const string CsvHeader = "section,index,item,detail,value,t_sec";
@@ -51,6 +63,7 @@ public class GameManager : MonoBehaviour
     private readonly List<ColorChoiceRecord> firstTestChoices = new List<ColorChoiceRecord>();
     private readonly List<ColorChoiceRecord> secondTestChoices = new List<ColorChoiceRecord>();
     private readonly List<SequencerHitRecord> sequencerHits = new List<SequencerHitRecord>();
+    private readonly List<SequencerRecordingEvent> sequencerRecordingEvents = new List<SequencerRecordingEvent>();
 
     private string patientName;
     private string therapistName;
@@ -98,6 +111,7 @@ public class GameManager : MonoBehaviour
         firstTestChoices.Clear();
         secondTestChoices.Clear();
         sequencerHits.Clear();
+        sequencerRecordingEvents.Clear();
 
         IsSecondTestComplete = false;
         LastCsvExportPath = null;
@@ -179,17 +193,32 @@ public class GameManager : MonoBehaviour
         Debug.Log($"[{testLabel}] Натиснута кнопка: {color}");
     }
 
-    public void HitSequencerButton(string groupName, string buttonLabel, string moodTag)
+    // Logged for every press, whether or not the Record button is active.
+    public void HitSequencerButton(string groupName, string buttonLabel, string moodTag, string action = "start")
     {
         sequencerHits.Add(new SequencerHitRecord
         {
             groupName = groupName,
             buttonLabel = buttonLabel,
             moodTag = moodTag,
+            action = string.IsNullOrEmpty(action) ? "start" : action,
             sessionTime = sessionElapsed
         });
 
-        Debug.Log($"[Секвенсор] {groupName}/{buttonLabel} (настрій: {moodTag})");
+        Debug.Log($"[Секвенсор] {groupName}/{buttonLabel} — {action} (настрій: {moodTag})");
+    }
+
+    // Record button workflow: armed → started (first loop press) → stopped, or armed → cancelled.
+    public void RecordSequencerRecordingEvent(string eventName, string fileName = null)
+    {
+        sequencerRecordingEvents.Add(new SequencerRecordingEvent
+        {
+            eventName = eventName,
+            fileName = fileName,
+            sessionTime = sessionElapsed
+        });
+
+        Debug.Log($"[Секвенсор] Запис: {eventName}{(string.IsNullOrEmpty(fileName) ? "" : " → " + fileName)}");
     }
 
     public void MarkSecondTestComplete()
@@ -225,7 +254,14 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < sequencerHits.Count; i++)
         {
             var hit = sequencerHits[i];
-            AppendRow(csv, "sequencer", i + 1, hit.buttonLabel, hit.groupName, EscapeText(hit.moodTag), hit.sessionTime);
+            string section = hit.action == "start" ? "sequencer" : "sequencer_" + hit.action;
+            AppendRow(csv, section, i + 1, hit.buttonLabel, hit.groupName, EscapeText(hit.moodTag), hit.sessionTime);
+        }
+
+        for (int i = 0; i < sequencerRecordingEvents.Count; i++)
+        {
+            var evt = sequencerRecordingEvents[i];
+            AppendRow(csv, "sequencer_record", i + 1, evt.eventName, null, EscapeText(evt.fileName), evt.sessionTime);
         }
 
         string filePath = GetSessionFilePath("instrument_data", "csv");

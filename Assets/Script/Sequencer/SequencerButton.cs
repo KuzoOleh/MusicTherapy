@@ -77,6 +77,9 @@ public class SequencerButton : MonoBehaviour
     private SequencerButtonDefinition definition;
     private SequencerClock clock;
     private SequencerRecordController recordController;
+    // Every press is logged for the therapist's report, independent of the Record button
+    // (which only controls the WAV audio capture). Cached once for all buttons.
+    private static GameManager sessionLog;
     private XRBaseInteractable interactable;
     private bool isPlaying;
     private bool isStopping;
@@ -257,6 +260,7 @@ public class SequencerButton : MonoBehaviour
                     buttonRenderer.material.color = ColorForGroup();
                 }
             }
+            LogAction(isStopping ? "stop" : "resume");
             return;
         }
 
@@ -267,13 +271,31 @@ public class SequencerButton : MonoBehaviour
         isPlaying = true;
         isStopping = false;
         clock.NotifyLoopStarted();
+        // Notify the recorder first so an armed recording's "started" event is logged before
+        // the press that triggered it.
         recordController?.NotifyButtonPressed(definition);
+        LogAction("start");
 
         if (progressBarRoot != null)
         {
             progressBarRoot.SetActive(true);
         }
         SetGlowVisible(true);
+    }
+
+    // action: "start" (loop launched), "stop" (stop requested — the loop ends on the next
+    // beat), "resume" (a pending stop was cancelled, the loop keeps playing).
+    private void LogAction(string action)
+    {
+        if (sessionLog == null)
+        {
+            sessionLog = FindFirstObjectByType<GameManager>();
+        }
+
+        if (sessionLog != null && definition != null)
+        {
+            sessionLog.HitSequencerButton(definition.groupName, definition.displayLabel, definition.moodTag, action);
+        }
     }
 
     // Finds the next beat boundary (relative to this loop's own start time, not the shared

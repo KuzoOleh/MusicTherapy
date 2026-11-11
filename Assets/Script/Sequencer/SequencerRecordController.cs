@@ -2,9 +2,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Record/Stop state machine for the sequencer panel. Recording (both audio
-// capture and CSV logging) only actually starts on the first button press
-// after arming, so no dead silence gets captured at the start of a session.
+// Record/Stop state machine for the sequencer panel. Controls ONLY the WAV audio
+// capture — every sequencer button press is logged for the session report regardless
+// (see SequencerButton.LogAction). Capture starts on the first button press after
+// arming, so no dead silence gets recorded. Each step of the Record workflow
+// (armed / started / stopped / cancelled) is itself logged so the therapist can see
+// in the report when the patient used Record.
 public class SequencerRecordController : MonoBehaviour
 {
     private enum State { Idle, Armed, Recording }
@@ -42,8 +45,12 @@ public class SequencerRecordController : MonoBehaviour
         {
             case State.Idle:
                 state = State.Armed;
+                gameManager?.RecordSequencerRecordingEvent("armed");
                 break;
             case State.Armed:
+                gameManager?.RecordSequencerRecordingEvent("cancelled");
+                state = State.Idle;
+                break;
             case State.Recording:
                 FinalizeSession();
                 state = State.Idle;
@@ -59,12 +66,8 @@ public class SequencerRecordController : MonoBehaviour
         {
             wavRecorder.BeginCapture();
             state = State.Recording;
+            gameManager?.RecordSequencerRecordingEvent("started");
             UpdateLabel();
-        }
-
-        if (state == State.Recording)
-        {
-            gameManager.HitSequencerButton(definition.groupName, definition.displayLabel, definition.moodTag);
         }
     }
 
@@ -74,6 +77,7 @@ public class SequencerRecordController : MonoBehaviour
         {
             string path = gameManager.GetSessionFilePath("sequencer_recording", "wav");
             string savedPath = wavRecorder.EndCaptureAndSave(path);
+            gameManager?.RecordSequencerRecordingEvent("stopped", System.IO.Path.GetFileName(savedPath));
             Debug.Log($"[Sequencer] Session recording saved to {savedPath}");
         }
     }

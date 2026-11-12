@@ -64,6 +64,8 @@ public class GameManager : MonoBehaviour
     private readonly List<ColorChoiceRecord> secondTestChoices = new List<ColorChoiceRecord>();
     private readonly List<SequencerHitRecord> sequencerHits = new List<SequencerHitRecord>();
     private readonly List<SequencerRecordingEvent> sequencerRecordingEvents = new List<SequencerRecordingEvent>();
+    // Extra files of this session sent to the therapist with the CSV (e.g. the sequencer WAV).
+    private readonly List<string> sessionFiles = new List<string>();
 
     private string patientName;
     private string therapistName;
@@ -112,6 +114,7 @@ public class GameManager : MonoBehaviour
         secondTestChoices.Clear();
         sequencerHits.Clear();
         sequencerRecordingEvents.Clear();
+        sessionFiles.Clear();
 
         IsSecondTestComplete = false;
         LastCsvExportPath = null;
@@ -224,6 +227,42 @@ public class GameManager : MonoBehaviour
     public void MarkSecondTestComplete()
     {
         IsSecondTestComplete = true;
+    }
+
+    public void RegisterSessionFile(string path)
+    {
+        if (!string.IsNullOrEmpty(path) && !sessionFiles.Contains(path))
+        {
+            sessionFiles.Add(path);
+        }
+    }
+
+    // Called (on the main thread) when the therapist fetches the results. Files are only
+    // offered once the second Lüscher test is done; a sequencer recording that's still running
+    // is stopped and saved first, and the CSV is rewritten so it includes that.
+    public MusicTherapy.Net.ExportPlan PrepareExport()
+    {
+        if (!IsSecondTestComplete)
+        {
+            return new MusicTherapy.Net.ExportPlan
+            {
+                Ready = false,
+                Error = "The session isn't finished yet — the patient hasn't completed the second Lüscher test."
+            };
+        }
+
+        var recorder = FindFirstObjectByType<SequencerRecordController>();
+        bool recordingChanged = recorder != null && recorder.FinalizeIfRecording();
+
+        if (recordingChanged || string.IsNullOrEmpty(LastCsvExportPath) || !File.Exists(LastCsvExportPath))
+        {
+            SaveStatsToCSV();
+        }
+
+        var plan = new MusicTherapy.Net.ExportPlan { Ready = true };
+        plan.Paths.Add(LastCsvExportPath);
+        plan.Paths.AddRange(sessionFiles.Where(File.Exists));
+        return plan;
     }
 
     // ---------------------------------------------------------------- CSV export

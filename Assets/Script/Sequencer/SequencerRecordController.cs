@@ -71,6 +71,27 @@ public class SequencerRecordController : MonoBehaviour
         }
     }
 
+    // Stops an armed or running recording (used before the results are sent to the therapist,
+    // so the WAV is complete). Returns true if anything changed.
+    public bool FinalizeIfRecording()
+    {
+        switch (state)
+        {
+            case State.Armed:
+                gameManager?.RecordSequencerRecordingEvent("cancelled");
+                break;
+            case State.Recording:
+                FinalizeSession();
+                break;
+            default:
+                return false;
+        }
+
+        state = State.Idle;
+        UpdateLabel();
+        return true;
+    }
+
     private void FinalizeSession()
     {
         if (wavRecorder.IsCapturing)
@@ -78,6 +99,7 @@ public class SequencerRecordController : MonoBehaviour
             string path = gameManager.GetSessionFilePath("sequencer_recording", "wav");
             string savedPath = wavRecorder.EndCaptureAndSave(path);
             gameManager?.RecordSequencerRecordingEvent("stopped", System.IO.Path.GetFileName(savedPath));
+            gameManager?.RegisterSessionFile(savedPath);
             Debug.Log($"[Sequencer] Session recording saved to {savedPath}");
         }
     }

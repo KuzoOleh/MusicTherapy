@@ -13,43 +13,83 @@ MonoBehaviour:
   m_Name: PlaceholderBank
   m_EditorClassIdentifier: 
   buttons:
-  - displayLabel: Bass
-    groupName: Bass
-    moodTag: groovy
-    clip: {fileID: 8300000, guid: 1103518f3e04251488de8f6029f474dd, type: 3}
-    volume: 0.5
-  - displayLabel: Chords
-    groupName: Piano
-    moodTag: groovy
-    clip: {fileID: 8300000, guid: 0dc09276204c93b4fba1e671b0547459, type: 3}
-    volume: 0.5
-  - displayLabel: Kick
-    groupName: Drum
-    moodTag: groovy
-    clip: {fileID: 8300000, guid: e8fa18a4b5319ba4f875bc980d930ff6, type: 3}
-    volume: 0.5
-  - displayLabel: Hi-Hat
-    groupName: Drum
-    moodTag: groovy
-    clip: {fileID: 8300000, guid: a860f72f891b2a54eb29ec9e306f6d97, type: 3}
-    volume: 0.5
-  - displayLabel: Hi-Hat (close)
-    groupName: Drum
-    moodTag: groovy
-    clip: {fileID: 8300000, guid: 0950ed4c9a1cc344fb54a0c3f2210c4d, type: 3}
-    volume: 0.5
-  - displayLabel: Hi-Hat (loop)
-    groupName: Drum
-    moodTag: groovy
-    clip: {fileID: 8300000, guid: d28524a38423c0e47ab1b8867cae86df, type: 3}
-    volume: 0.5
-  - displayLabel: Clap2
-    groupName: Drum
-    moodTag: groovy
-    clip: {fileID: 8300000, guid: b707cd5f3d351d84cb6761a9fc1719bb, type: 3}
-    volume: 0.5
-  - displayLabel: Clap
-    groupName: Drum
-    moodTag: groovy
-    clip: {fileID: 8300000, guid: dba53f444f798ea4484bc0f1bf94aeeb, type: 3}
-    volume: 0.5
+  - displayLabel: "\u0411\u0430\u04411"
+    groupName: "\u0411\u0430\u0441"
+    moodTag: "\u0421\u043F\u043E\u043A\u0456\u0439\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: 0ea8e891f95bdd9499cae2c23cdae6f4, type: 3}
+    volume: 0.47
+  - displayLabel: "\u0411\u0430\u04412"
+    groupName: "\u0411\u0430\u0441"
+    moodTag: "\u0421\u043F\u043E\u043A\u0456\u0439\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: a5e912e3380cc7f4a896cbbf47cfe80e, type: 3}
+    volume: 0.427
+  - displayLabel: "\u0411\u0430\u04413"
+    groupName: "\u0411\u0430\u0441"
+    moodTag: "\u0410\u043A\u0442\u0438\u0432\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: f10661775a99bfa47a3786c525040b76, type: 3}
+    volume: 0.427
+  - displayLabel: "\u0411\u0430\u04414"
+    groupName: "\u0411\u0430\u0441"
+    moodTag: "\u0410\u043A\u0442\u0438\u0432\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: d9c7434d7661d8e40ba5479e32fa0af5, type: 3}
+    volume: 0.415
+  - displayLabel: "\u0410\u043A\u043E\u0440\u04341"
+    groupName: "\u0410\u043A\u043E\u0440\u0434"
+    moodTag: "\u0412\u0435\u0441\u0435\u043B\u0438\u0439"
+    clip: {fileID: 8300000, guid: aa8690050aa4f8b4a99c0eeac9679ec5, type: 3}
+    volume: 0.458
+  - displayLabel: "\u0410\u043A\u043E\u0440\u04342"
+    groupName: "\u0410\u043A\u043E\u0440\u0434"
+    moodTag: "\u0412\u0435\u0441\u0435\u043B\u0438\u0439"
+    clip: {fileID: 8300000, guid: b8c774cb0de26af478131c69bd969426, type: 3}
+    volume: 0.466
+  - displayLabel: "\u0410\u043A\u043E\u0440\u04343"
+    groupName: "\u0410\u043A\u043E\u0440\u0434"
+    moodTag: "\u0421\u0443\u043C\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: a22dc3159978b7948abddbc30c74a3db, type: 3}
+    volume: 0.526
+  - displayLabel: "\u0410\u043A\u043E\u0440\u04344"
+    groupName: "\u0410\u043A\u043E\u0440\u0434"
+    moodTag: "\u0421\u0443\u043C\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: ddfccf2c1b7db114987a7b30e035bf77, type: 3}
+    volume: 0.553
+  - displayLabel: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u04381"
+    groupName: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u0438"
+    moodTag: "\u0410\u043A\u0442\u0438\u0432\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: dc9ff1d419c36dd42ba9854c611fd1bb, type: 3}
+    volume: 0.36
+  - displayLabel: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u04382"
+    groupName: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u0438"
+    moodTag: "\u0410\u043A\u0442\u0438\u0432\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: d5d0ada0758792248be7e667f64ee48c, type: 3}
+    volume: 0.383
+  - displayLabel: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u04383"
+    groupName: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u0438"
+    moodTag: "\u0421\u043F\u043E\u043A\u0456\u0439\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: 23762af94a75ffb47bb22df77e1f461c, type: 3}
+    volume: 0.379
+  - displayLabel: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u04384"
+    groupName: "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u0438"
+    moodTag: "\u0421\u043F\u043E\u043A\u0456\u0439\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: 5fbdc4b09efa39240b47048b8cf51ab7, type: 3}
+    volume: 0.383
+  - displayLabel: "\u0421\u0438\u043D\u04421"
+    groupName: "\u0421\u0438\u043D\u0442"
+    moodTag: "\u0412\u0435\u0441\u0435\u043B\u0438\u0439"
+    clip: {fileID: 8300000, guid: 8c744cc4b19dec74b994ba418255bcc8, type: 3}
+    volume: 0
+  - displayLabel: "\u0421\u0438\u043D\u04422"
+    groupName: "\u0421\u0438\u043D\u0442"
+    moodTag: "\u0412\u0435\u0441\u0435\u043B\u0438\u0439"
+    clip: {fileID: 8300000, guid: 85a91cb6c5f16a549a99f2d2974be9d6, type: 3}
+    volume: 0
+  - displayLabel: "\u0421\u0438\u043D\u04423"
+    groupName: "\u0421\u0438\u043D\u0442"
+    moodTag: "\u0421\u0443\u043C\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: 892f8ed214f9ee747b2dba92204e6f17, type: 3}
+    volume: 0
+  - displayLabel: "\u0421\u0438\u043D\u04424"
+    groupName: "\u0421\u0438\u043D\u0442"
+    moodTag: "\u0421\u0443\u043C\u043D\u0438\u0439"
+    clip: {fileID: 8300000, guid: f6fafd75652ca924ea6aaf89799be27a, type: 3}
+    volume: 0
